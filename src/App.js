@@ -1,20 +1,22 @@
 import React from 'react'
+import {BrowserRouter as Router, Routes, Route, Redirect} from 'react-router-dom'
 
-import Navbar from './Components/Navbar/Navbar';
-import Footer from './Components/Footer/Footer';
-import Jumbotron from './Components/Jumbotron/Jumbotron';
-import HomeStatistics from './Components/Statistics/Statistics';
-import Timeline from './Components/Timeline/Timeline';
+import Navbar from './Components/Navbar/NavbarComponent';
+import Footer from './Components/Footer/FooterComponent';
+
+import Home from './Pages/HomePage';
+import FindDonor from './Pages/FindDonor';
 
 function App() {
   return (
-    <div>
+    <Router>
       <Navbar/>
-      <Jumbotron/>
-      <HomeStatistics/>
-      <Timeline/>
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/find-donor/' element={<FindDonor/>}/>
+      </Routes>
       <Footer/>
-    </div>
+    </Router>
   );
 }
 
