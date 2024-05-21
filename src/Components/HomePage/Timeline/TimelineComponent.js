@@ -1,5 +1,4 @@
 import React from "react";
-import TimelineDetails from "./TimelineDetailsComponent";
 
 import  {NavLink} from 'react-router-dom'
 

@@ -44,7 +44,7 @@ const newsList = [
         <Route path='/' element={<Home newsList={newsList.slice(0, 3)}/>} />
         <Route path='/find-donor/' element={<FindDonor donorList={donorList}/>}/>
         <Route path='/news/' element={<TimelineList newsList={newsList}/>}/>
-        <Route path='/news/:news_id' element={<TimelineDetails newsList={newsList} />} />
+        <Route path='/news/:news_id' element={<TimelineDetails newsList={newsList}/>} />
       </Routes>
       <Footer/>
     </Router>
