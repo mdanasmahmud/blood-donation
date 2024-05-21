@@ -1,10 +1,9 @@
 import React from 'react'
+import DonorList from '../Components/FindDonor/DonorList/DonorListComponent';
 
-
-function FindDonor() {
+const FindDonor = (props) => {
   return (
-    <div>
-    </div>
+    <DonorList donorList={props.donorList}/>
   );
 }
 
