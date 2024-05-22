@@ -8,7 +8,7 @@ function Home(props) {
   return (
     <div>
       <Jumbotron/>
-      <HomeStatistics/>
+      <HomeStatistics totalDonors={props.totalDonors}/>
       {console.log(props.newsList)}
       <Timeline newsList={props.newsList}/>
     </div>
