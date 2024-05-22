@@ -8,7 +8,10 @@ import Home from './Pages/HomePage';
 import FindDonor from './Pages/FindDonor';
 import AboutPage from './Pages/AboutPage';
 import TimelineList from './Pages/TimelinePage';
+
 import TimelineDetails from './Components/HomePage/Timeline/TimelineDetailsComponent';
+import SignUpComponent from './Components/Others/SignUpComponent';
+import ForgotPasswordComponent from './Components/Others/ForgotPasswordComponent';
 
 function App() {
 
@@ -47,6 +50,8 @@ const newsList = [
         <Route path='/news/' element={<TimelineList newsList={newsList}/>}/>
         <Route path='/news/:news_id' element={<TimelineDetails newsList={newsList}/>} />
         <Route path='/about/' element={<AboutPage />}/>
+        <Route path='/sign-up/' element={<SignUpComponent />}/>
+        <Route path='/forgot-password/' element={<ForgotPasswordComponent />}/>
       </Routes>
       <Footer/>
     </Router>
