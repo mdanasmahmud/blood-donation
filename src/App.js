@@ -6,6 +6,7 @@ import Footer from './Components/Footer/FooterComponent';
 
 import Home from './Pages/HomePage';
 import FindDonor from './Pages/FindDonor';
+import AboutPage from './Pages/AboutPage';
 import TimelineList from './Pages/TimelinePage';
 import TimelineDetails from './Components/HomePage/Timeline/TimelineDetailsComponent';
 
@@ -41,10 +42,11 @@ const newsList = [
     <Router>
       <Navbar/>
       <Routes>
-        <Route path='/' element={<Home newsList={newsList.slice(0, 3)}/>} />
+        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length}/>} />
         <Route path='/find-donor/' element={<FindDonor donorList={donorList}/>}/>
         <Route path='/news/' element={<TimelineList newsList={newsList}/>}/>
         <Route path='/news/:news_id' element={<TimelineDetails newsList={newsList}/>} />
+        <Route path='/about/' element={<AboutPage />}/>
       </Routes>
       <Footer/>
     </Router>
