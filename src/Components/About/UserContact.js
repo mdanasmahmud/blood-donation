@@ -18,7 +18,7 @@ const UserContact = (props) => {
 
     return (
         <div>
-            {buttonClicked && <BannerComponent userName = {name}/>}
+            {buttonClicked && <BannerComponent message = {`Dear ${name}, your message has been sent`}/>}
             <form class="max-w-sm mx-auto">
             <div >
                 <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name: </label>
