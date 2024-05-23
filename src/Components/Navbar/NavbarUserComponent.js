@@ -62,7 +62,7 @@ const UserLoggedin = (props) => {
             </div>
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
             <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><NavLink to='/user/dashboard/'>Dashboard</NavLink></a>
             </li>
             <li>
                 <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
@@ -77,7 +77,7 @@ const UserLoggedin = (props) => {
 
 const NavbarUserComponent = () => {
 
-    const [userLoginStatus, setUserLoginStatus] = useState(false)
+    const [userLoginStatus, setUserLoginStatus] = useState(true)
 
 
     return(
