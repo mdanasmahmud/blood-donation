@@ -8,6 +8,7 @@ import Home from './Pages/HomePage';
 import FindDonor from './Pages/FindDonor';
 import AboutPage from './Pages/AboutPage';
 import TimelineList from './Pages/TimelinePage';
+import UserDashboardPage from './Pages/UserDashboardPage';
 
 import TimelineDetails from './Components/HomePage/Timeline/TimelineDetailsComponent';
 import SignUpComponent from './Components/Others/SignUpComponent';
@@ -46,12 +47,13 @@ const newsList = [
       <Navbar/>
       <Routes>
         <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length}/>} />
-        <Route path='/find-donor/' element={<FindDonor donorList={donorList}/>}/>
-        <Route path='/news/' element={<TimelineList newsList={newsList}/>}/>
-        <Route path='/news/:news_id' element={<TimelineDetails newsList={newsList}/>} />
-        <Route path='/about/' element={<AboutPage />}/>
-        <Route path='/sign-up/' element={<SignUpComponent />}/>
-        <Route path='/forgot-password/' element={<ForgotPasswordComponent />}/>
+        <Route path='find-donor' element={<FindDonor donorList={donorList}/>}/>
+        <Route path='news/' element={<TimelineList newsList={newsList}/>}/>
+        <Route path='news/:news_id/' element={<TimelineDetails newsList={newsList}/>} />
+        <Route path='about/' element={<AboutPage />}/>
+        <Route path='sign-up/' element={<SignUpComponent />}/>
+        <Route path='forgot-password/' element={<ForgotPasswordComponent />}/>
+        <Route path='user/dashboard/*' element={<UserDashboardPage />}/>
       </Routes>
       <Footer/>
     </Router>
