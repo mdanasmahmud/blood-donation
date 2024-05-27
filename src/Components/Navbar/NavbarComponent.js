@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import NavbarUserComponent from './NavbarUserComponent';
 
-function Navbar() {
+function Navbar(props) {
   return (
 
 
@@ -21,7 +21,7 @@ function Navbar() {
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
         </svg>
     </button>
-    <NavbarUserComponent />
+    <NavbarUserComponent userList={props.userList}/>
   </div>
   <div class="mr-5 items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">

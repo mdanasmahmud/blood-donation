@@ -41,10 +41,15 @@ const newsList = [
   {news_id: 10, newsTitle: 'Year End Review', shortDescription: 'Looking back at our achievements this year', newsDate: '11-01-2021', newsDescription: 'Looking back at our achievements this year. We couldnt have done it without you.', newsAuthor: 'Anas'},
 ];
 
+const users = [
+   {user_id: 0, userName: 'Anas Mahmud', password:'1234', email:'abid1234@gmail.com'},
+   {user_id: 1, userName: 'John Doe', password:'4321', email:'johndoe1234@gmail.com'}
+]
+
 
   return (
     <Router>
-      <Navbar/>
+      <Navbar userList={users}/>
       <Routes>
         <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length}/>} />
         <Route path='find-donor' element={<FindDonor donorList={donorList}/>}/>
