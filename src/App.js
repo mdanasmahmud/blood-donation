@@ -9,10 +9,12 @@ import FindDonor from './Pages/FindDonor';
 import AboutPage from './Pages/AboutPage';
 import TimelineList from './Pages/TimelinePage';
 import UserDashboardPage from './Pages/UserDashboardPage';
+import BloodNeededPage from './Pages/BloodNeededPage';
 
 import TimelineDetails from './Components/HomePage/Timeline/TimelineDetailsComponent';
 import SignUpComponent from './Components/Others/SignUpComponent';
 import ForgotPasswordComponent from './Components/Others/ForgotPasswordComponent';
+import PrivateRoute from './Components/User/PrivateRouteComponent';
 
 function App() {
 
@@ -46,6 +48,19 @@ const users = [
    {user_id: 1, userName: 'John Doe', password:'4321', email:'johndoe1234@gmail.com'}
 ]
 
+const patientDetails = [
+  {patient_id:0, patientName:'John Mary', patientBloodGroup:'AB+', patientLocation:'Dhaka', patientContact:'01234567890'},
+  {patient_id:1, patientName:'Alice Smith', patientBloodGroup:'O-', patientLocation:'Chittagong', patientContact:'01987654321'},
+  {patient_id:2, patientName:'Robert Johnson', patientBloodGroup:'A+', patientLocation:'Khulna', patientContact:'01876543210'},
+  {patient_id:3, patientName:'Emily Davis', patientBloodGroup:'B-', patientLocation:'Rajshahi', patientContact:'01765432109'},
+  {patient_id:4, patientName:'Michael Brown', patientBloodGroup:'O+', patientLocation:'Barisal', patientContact:'01654321098'},
+  {patient_id:5, patientName:'Sarah Wilson', patientBloodGroup:'AB-', patientLocation:'Sylhet', patientContact:'01543210987'},
+  {patient_id:6, patientName:'David Taylor', patientBloodGroup:'A-', patientLocation:'Comilla', patientContact:'01432109876'},
+  {patient_id:7, patientName:'Sophia Moore', patientBloodGroup:'B+', patientLocation:'Rangpur', patientContact:'01321098765'},
+  {patient_id:8, patientName:'James Anderson', patientBloodGroup:'AB+', patientLocation:'Narayanganj', patientContact:'01210987654'},
+  {patient_id:9, patientName:'Olivia Thomas', patientBloodGroup:'O-', patientLocation:'Gazipur', patientContact:'01109876543'}
+];
+
 
   return (
     <Router>
@@ -53,12 +68,13 @@ const users = [
       <Routes>
         <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length}/>} />
         <Route path='find-donor' element={<FindDonor donorList={donorList}/>}/>
+        <Route path='blood-needed' element={<BloodNeededPage patientDetails={patientDetails}/>}/>
         <Route path='news/' element={<TimelineList newsList={newsList}/>}/>
         <Route path='news/:news_id/' element={<TimelineDetails newsList={newsList}/>} />
         <Route path='about/' element={<AboutPage />}/>
         <Route path='sign-up/' element={<SignUpComponent />}/>
         <Route path='forgot-password/' element={<ForgotPasswordComponent />}/>
-        <Route path='user/dashboard/*' element={<UserDashboardPage />}/>
+        <Route path='user/dashboard/*' element={<PrivateRoute><UserDashboardPage /></PrivateRoute>}/>
       </Routes>
       <Footer/>
     </Router>
