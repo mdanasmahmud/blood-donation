@@ -1,7 +1,6 @@
 import React from 'react'
 
-const BloodNeededListComponent = (props) => {
-  console.log(props.patientDetails)
+const BloodNeededListComponent = ({patientDetails, setClickedPatientId}) => {
   return (
     <div className='max-w-screen-xl justify-between mx-auto'>
         <div class="ml-auto max-w-screen-md m-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -24,7 +23,7 @@ const BloodNeededListComponent = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {props.patientDetails.map((patient) => (
+                        {patientDetails.map((patient) => (
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {patient.patientName}
@@ -36,7 +35,14 @@ const BloodNeededListComponent = (props) => {
                                 {patient.patientLocation}
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</a>
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" 
+                                
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setClickedPatientId(patient.patient_id);
+                                  }}
+                                
+                                >Details</a>
                             </td>
                         </tr>
                         ))}
