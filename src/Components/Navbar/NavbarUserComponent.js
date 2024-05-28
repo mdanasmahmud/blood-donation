@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 
 // Component if the user did not login
 const UserNotLogin = ({ setUserLoginStatus,userList, setUser}) => {
-    console.log(userList)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

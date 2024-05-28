@@ -25,8 +25,6 @@ const BloodNeededPage = (props) => {
     patientDeeper.patient_id === clickedPatientId
   )
 
-  console.log(patientDeeperDetails)
-
   return (
     <div>
       
