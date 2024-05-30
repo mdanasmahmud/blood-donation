@@ -11,6 +11,31 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+// Custom red icon
+const redIcon = new L.Icon({
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+    className: 'leaflet-marker-icon leaflet-marker-icon-red'
+});
+
+// Adding custom CSS to change the icon color to red
+const markerIconRedCss = `
+.leaflet-marker-icon-red {
+    filter: hue-rotate(0deg) saturate(10);
+}
+`;
+
+// Inject custom CSS into the document head
+const styleElement = document.createElement('style');
+styleElement.type = 'text/css';
+styleElement.appendChild(document.createTextNode(markerIconRedCss));
+document.head.appendChild(styleElement);
+
 const MapUpdater = ({ position }) => {
     const map = useMap();
     useEffect(() => {
@@ -19,7 +44,7 @@ const MapUpdater = ({ position }) => {
     return null;
 };
 
-const MapComponent = () => {
+const MapComponent = ({ allLocations }) => {
     const [position, setPosition] = useState([23.73598, 90.32154]); // Default position
 
     useEffect(() => {
@@ -46,6 +71,13 @@ const MapComponent = () => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
+                {allLocations.map((loc, index) => (
+                    <Marker key={index} position={loc} icon={redIcon}>
+                        <Popup>
+                            Location: {loc[0]}, {loc[1]}
+                        </Popup>
+                    </Marker>
+                ))}
                 <Marker position={position}>
                     <Popup>
                         You are here. {position}

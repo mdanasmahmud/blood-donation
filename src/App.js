@@ -19,14 +19,14 @@ import PrivateRoute from './Components/User/PrivateRouteComponent';
 function App() {
 
   const donorList = [
-    {user_id: 0, donorName: 'Anas Mahmud', blood_group: 'A+'},
-    {user_id: 1, donorName: 'John Doe', blood_group: 'B+'},
-    {user_id: 2, donorName: 'Jane Smith', blood_group: 'O+'},
-    {user_id: 3, donorName: 'Emma Johnson', blood_group: 'AB+'},
-    {user_id: 4, donorName: 'Robert Brown', blood_group: 'A-'},
-    {user_id: 5, donorName: 'Olivia Davis', blood_group: 'B-'},
-    {user_id: 6, donorName: 'William Miller', blood_group: 'O-'},
-    {user_id: 7, donorName: 'Emily Wilson', blood_group: 'AB-'},
+    {user_id: 0, donorName: 'Anas Mahmud', blood_group: 'A+', phoneNumber: '123-456-7890', location: [23.74699, 90.37092]},
+    {user_id: 1, donorName: 'John Doe', blood_group: 'B+', phoneNumber: '234-567-8901', location: [23.74595, 90.36841]},
+    {user_id: 2, donorName: 'Jane Smith', blood_group: 'O+', phoneNumber: '345-678-9012', location: [23.74299, 90.36488]},
+    {user_id: 3, donorName: 'Emma Johnson', blood_group: 'AB+', phoneNumber: '456-789-0123', location: [23.73924, 90.36509]},
+    {user_id: 4, donorName: 'Robert Brown', blood_group: 'A-', phoneNumber: '567-890-1234', location: [23.73313, 90.37160]},
+    {user_id: 5, donorName: 'Olivia Davis', blood_group: 'B-', phoneNumber: '678-901-2345', location: [23.73585, 90.38172]},
+    {user_id: 6, donorName: 'William Miller', blood_group: 'O-', phoneNumber: '789-012-3456', location: [23.74169, 90.39520]},
+    {user_id: 7, donorName: 'Emily Wilson', blood_group: 'AB-', phoneNumber: '890-123-4567', location: [23.75077, 90.39326]},
 ]
 
 const newsList = [
