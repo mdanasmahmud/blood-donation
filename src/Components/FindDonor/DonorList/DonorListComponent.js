@@ -15,7 +15,10 @@ const DonorList = ({donorList, setClickedId}) => {
                                 Blood Group
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Details
+                                Phone
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Map
                             </th>
                         </tr>
                     </thead>
@@ -28,6 +31,9 @@ const DonorList = ({donorList, setClickedId}) => {
                             </td>
                             <td class="px-6 py-4">
                                 {donor.blood_group}
+                            </td>
+                            <td class="px-6 py-4">
+                                {donor.phoneNumber}
                             </td>
                             <td class="px-6">
                             <button onClick={() => setClickedId(donor.location)} type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
