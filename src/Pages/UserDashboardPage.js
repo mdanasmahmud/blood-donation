@@ -5,12 +5,12 @@ import UserSidebarComponent from "../Components/User/UserSidebarComponent";
 import UserProfileComponent from "../Components/User/UserProfileComponent";
 import UserDashboardComponent from "../Components/User/UserDashboardComponent";
 
-const UserDashboardPage = () => {
+const UserDashboardPage = ({appointmentDetails}) => {
     return(
         <div>
             <UserSidebarComponent/>
             <Routes>
-                <Route path="" element={<UserDashboardComponent/>}/>
+                <Route path="" element={<UserDashboardComponent appointmentDetails={appointmentDetails}/>}/>
                 <Route path="profile" element={<UserProfileComponent/>}/>
             </Routes>
         </div>
