@@ -4,7 +4,7 @@ import MapComponent from '../Components/FindDonor/MapComponent';
 
 const FindDonor = (props) => {
 
-  const [clickedId, setClickedId] = useState([23.73598, 90.32154])
+  const [clickedId, setClickedId] = useState('')
 
   const locationList = props.donorList.map(donor => donor.location);
 
