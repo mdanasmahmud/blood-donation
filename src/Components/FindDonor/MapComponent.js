@@ -112,7 +112,11 @@ const MapComponent = ({ allLocations, location }) => {
                 {allLocations.map((loc, index) => (
                     <MarkerWithAddress key={index} position={loc} icon={redIcon} />
                 ))}
-                <MarkerWithAddress position={position} />
+                <Marker position={position}>
+                    <Popup>
+                        You are here. {position}
+                    </Popup>
+                </Marker>
                 {initialGeo && initialGeo.length === 2 && (
                     <MarkerWithAddress position={initialGeo} />
                 )}
