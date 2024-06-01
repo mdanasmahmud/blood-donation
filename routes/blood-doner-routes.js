@@ -23,7 +23,16 @@ router.get('/:user_id', (req, res, next) => {
         return p.user_id === bloodDonorId;
     })
     console.log('user requested get');
-    res.json({bloodDonor});
+
+    if(!bloodDonor){
+        const error = new Error('Donor with that id not found')
+        error.code = 404;
+        throw (error);
+    }
+    else{
+        res.json({bloodDonor});
+    }
+    
 });
 
 

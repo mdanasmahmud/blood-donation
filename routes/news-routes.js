@@ -25,8 +25,16 @@ router.get('/:news_id', (req, res, next) => {
     const newsOneId = newsList.find(p => {
         return p.news_id === newsId;
     })
-    console.log('user requested get');
-    res.json({newsOneId});
+    if(!newsOneId){
+        const error = new Error('News with that id not found')
+        error.code = 404;
+        throw (error);
+    }
+    else{
+        res.json({newsOneId});
+    }
+
+    
 });
 
 

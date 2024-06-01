@@ -22,8 +22,16 @@ router.get('/:appointmentUserId', (req, res, next) => {
     const userAppointments = appointments.filter(p => {
         return p.user_id === userId;
     })
-    console.log('user requested get');
-    res.json({userAppointments});
+
+    if(userAppointments.length === 0){
+        const error = new Error('Could not find any appointment for the user')
+        error.code = 404;
+        throw (error);
+    } else {
+        res.json({userAppointments});
+    }
+    
+    
 });
 
 

@@ -24,8 +24,16 @@ router.get('/:patient_id', (req, res, next) => {
     const patientOneId = patientDetails.find(p => {
         return p.patient_id === patientId;
     })
-    console.log('user requested get');
-    res.json({patientOneId});
+    if(!patientOneId){
+        const error = new Error('Patient with the id not found')
+        error.code = 404;
+        throw (error);
+    }
+    else{
+        res.status(404).json({message: ""})
+        res.json({patientOneId});
+    }
+    
 });
 
 

@@ -15,5 +15,13 @@ app.use('/api/news', newsRoute) // Can show all patient Id or 1 if needed
 app.use('/api/blood-donors',bloodDonorRoutes); // Can show all blood donors or only 1 if needed
 app.use('/api/users', userRoute) // Only shows 1 user if needed
 
+app.use((error ,req, res, next) => { // Will take this as a error handling middleware
+    if(res.headerSent) {
+        return next(error);
+    }
+    res.status(error.code || 500);
+    res.json({message: error.message || "Unknown Error!"});
+})
+
 app.listen(5000);
 
