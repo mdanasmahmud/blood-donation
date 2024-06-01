@@ -30,5 +30,23 @@ const getDonersbyId = (req, res, next) => {
     }
 }
 
+// if someone wants to be a blood doner
+
+const postBloodDoner = (req, res, next) => {
+
+    const {user_id, donorName, blood_group} = req.body;
+
+    const newBloodDoner = {
+        user_id,
+        donorName,
+        blood_group
+    }
+
+    donorList.unshift(newBloodDoner)
+
+    res.status(201).json(newBloodDoner)
+}
+
 exports.getAllDoners = getAllDoners
 exports.getDonersbyId = getDonersbyId
+exports.postBloodDoner = postBloodDoner

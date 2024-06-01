@@ -1,8 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-
-
 const bloodDonorRoutes = require('./routes/blood-doner-routes')
 const newsRoute = require('./routes/news-routes')
 const patientRoute = require('./routes/patient-routes')
