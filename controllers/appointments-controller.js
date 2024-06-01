@@ -51,5 +51,4 @@ const postAppointmentbyUser = (req, res, next) => {
 }
 
 exports.getAppointmentsbyUser = getAppointmentsbyUser
-
 exports.postAppointmentbyUser = postAppointmentbyUser
