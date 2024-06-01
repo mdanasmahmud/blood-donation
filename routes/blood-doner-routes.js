@@ -13,6 +13,10 @@ const donorList = [
     {user_id: 7, donorName: 'Emily Wilson', blood_group: 'AB-'},
 ]
 
+router.get('/', (req, res, next) => {
+    res.json({donorList});
+});
+
 router.get('/:user_id', (req, res, next) => {
     const bloodDonorId = Number(req.params.user_id);
     const bloodDonor = donorList.find(p => {
