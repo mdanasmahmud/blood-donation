@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 
 const HttpError = require('../models/http-error')
 
@@ -28,4 +29,27 @@ const getAppointmentsbyUser = (req, res, next) => {
 
 }
 
+// We will trigger this post request when new appointments are set by the user
+
+const postAppointmentbyUser = (req, res, next) => {
+    const {user_id, date, time, patientLocationText, patientPhone, status} = req.body; // To get each data from the req.body, the post data will be sent in the body and we need to extract it
+
+    const newAppointment = {
+        appointmentId: uuidv4(),
+        user_id,
+        date,
+        time,
+        patientLocationText,
+        patientPhone,
+        status
+    }
+
+    appointments.unshift(newAppointment)
+
+    // 201 means it was a successful post requst and then it will show the data it had pushed through
+    res.status(201).json(newAppointment)
+}
+
 exports.getAppointmentsbyUser = getAppointmentsbyUser
+
+exports.postAppointmentbyUser = postAppointmentbyUser
