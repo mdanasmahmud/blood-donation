@@ -1,5 +1,7 @@
 const express = require('express')
 
+const HttpError = require('../models/http-error')
+
 const router = express.Router();
 
 const users = [
@@ -13,10 +15,7 @@ router.get('/:user_id', (req, res, next) => {
         return p.user_id === userId;
     })
     if(!userOneId){
-        
-        const error = new Error('Patient not found')
-        error.code = 404;
-        throw (error);
+        throw new HttpError("User by the id not found", 404)
     }
     else{
         res.json({userOneId});

@@ -1,5 +1,7 @@
 const express = require('express')
 
+const HttpError = require('../models/http-error')
+
 const router = express.Router();
 
 const newsList = [
@@ -26,9 +28,7 @@ router.get('/:news_id', (req, res, next) => {
         return p.news_id === newsId;
     })
     if(!newsOneId){
-        const error = new Error('News with that id not found')
-        error.code = 404;
-        throw (error);
+        throw new HttpError("News by the Id not found", 404);
     }
     else{
         res.json({newsOneId});

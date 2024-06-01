@@ -1,5 +1,7 @@
 const express = require('express')
 
+const HttpError = require('../models/http-error')
+
 const router = express.Router();
 
 const donorList = [
@@ -25,9 +27,7 @@ router.get('/:user_id', (req, res, next) => {
     console.log('user requested get');
 
     if(!bloodDonor){
-        const error = new Error('Donor with that id not found')
-        error.code = 404;
-        throw (error);
+        throw new HttpError('Donor with the id not found');
     }
     else{
         res.json({bloodDonor});

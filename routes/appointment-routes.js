@@ -1,5 +1,7 @@
 const express = require('express')
 
+const HttpError = require('../models/http-error')
+
 const router = express.Router()
 
 const appointments = [
@@ -24,14 +26,11 @@ router.get('/:appointmentUserId', (req, res, next) => {
     })
 
     if(userAppointments.length === 0){
-        const error = new Error('Could not find any appointment for the user')
-        error.code = 404;
-        throw (error);
+        throw new HttpError('Could not find any appointment for the user', 404)
     } else {
         res.json({userAppointments});
     }
-    
-    
+
 });
 
 
