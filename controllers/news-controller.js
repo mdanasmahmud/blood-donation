@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 const HttpError = require('../models/http-error')
 
 const newsList = [
@@ -33,5 +35,26 @@ const getNewsById = (req, res, next) => {
     
 }
 
+// Admin can post news using the admin pannel that will be the use of posting news
+
+const postNews = (req, res, next) => {
+    const {newsTitle, shortDescription, newsDate, newsDescription, newsAuthor} = req.body;
+
+    const newNews = {
+        news_id: uuidv4(),
+        newsTitle,
+        shortDescription,
+        newsDate,
+        newsDescription,
+        newsAuthor
+    }
+
+    newsList.unshift(newNews)
+
+    res.status(201).json(newNews)
+
+}
+
 exports.getAllNews =  getAllNews
 exports.getNewsById = getNewsById
+exports.postNews = postNews
