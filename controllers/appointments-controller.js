@@ -50,5 +50,19 @@ const postAppointmentbyUser = (req, res, next) => {
     res.status(201).json(newAppointment)
 }
 
+// Suppose a user posted a appointment and someone submited in their appointment form, they can accept it and it will change the status to Upcoming,
+
+const updateAppointmentbyUser = (req, res, next) => {
+    const {appointmentId, status} = req.body;
+
+    const appointmentIndex = appointments.findIndex(a => a.appointmentId === appointmentId);
+
+    appointments[appointmentIndex].status = status
+
+    res.status(201).json({appointment: appointments[appointmentIndex]});
+
+}
+
 exports.getAppointmentsbyUser = getAppointmentsbyUser
 exports.postAppointmentbyUser = postAppointmentbyUser
+exports.updateAppointmentbyUser = updateAppointmentbyUser
