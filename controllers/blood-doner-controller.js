@@ -47,6 +47,20 @@ const postBloodDoner = (req, res, next) => {
     res.status(201).json(newBloodDoner)
 }
 
+// A user can opt out from being a blood doner and it will delete their entry
+
+const deleteBloodDoner = (req, res, next) => {
+    const {user_id} = req.body;
+
+    const donorIndex = donorList.findIndex(d => d.user_id === user_id);
+
+    donorList.splice(donorIndex, 1);
+
+    res.status(201).json({message: 'Deleted donor.'});
+
+}
+
 exports.getAllDoners = getAllDoners
 exports.getDonersbyId = getDonersbyId
 exports.postBloodDoner = postBloodDoner
+exports.deleteBloodDoner = deleteBloodDoner
