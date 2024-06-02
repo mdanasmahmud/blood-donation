@@ -55,6 +55,38 @@ const postNews = (req, res, next) => {
 
 }
 
+const updateNews = (req, res, next) => {
+    const {news_id, newsTitle, shortDescription, newsDescription} = req.body;
+
+    const newsIndex = newsList.findIndex(n => n.news_id === news_id);
+
+    if (newsIndex === -1) {
+        throw new HttpError('Could not find any news for the provided id', 404);
+    }
+
+    newsList[newsIndex].newsTitle = newsTitle;
+    newsList[newsIndex].shortDescription = shortDescription;
+    newsList[newsIndex].newsDescription = newsDescription;
+
+    res.status(201).json({news: newsList[newsIndex]});
+}
+
+const deleteNews = (req, res, next) => {
+    const {news_id} = req.body;
+
+    const newsIndex = newsList.findIndex(n => n.news_id === news_id);
+
+    if (newsIndex === -1) {
+        throw new HttpError('Could not find any news for the provided id', 404);
+    }
+
+    newsList.splice(newsIndex, 1)
+
+    res.status(201).json({message: "News Deleted"})
+}
+
 exports.getAllNews =  getAllNews
 exports.getNewsById = getNewsById
 exports.postNews = postNews
+exports.updateNews = updateNews
+exports.deleteNews = deleteNews
