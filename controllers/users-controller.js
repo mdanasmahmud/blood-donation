@@ -26,6 +26,12 @@ const getUserById = (req, res, next) => {
 const postUser = (req, res, next) => {
     const {userName, password, email} = req.body;
 
+    const existingUser = users.find(u => u.email === email);
+
+    if (existingUser) {
+        throw new HttpError('User with this email already exists', 409);
+    }
+
     const newUser = {
         user_id: uuidv4(),
         userName,
@@ -42,6 +48,12 @@ const updateUser = (req, res, next) => {
     const {user_id, userName, password, email} = req.body
 
     const userIndex = users.findIndex(n => n.user_id === user_id)
+
+    const existingUser = users.find(u => u.email === email && u.user_id !== user_id);
+
+    if (existingUser) {
+        throw new HttpError('User with this email already exists', 409);
+    }
 
     users[userIndex].userName = userName
     users[userIndex].password = password
