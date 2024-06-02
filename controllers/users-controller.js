@@ -50,6 +50,19 @@ const updateUser = (req, res, next) => {
     res.status(201).json({message: "User update successfull"})
 }
 
+const loginUser = (req, res, next) => {
+    const {email, password} = req.body;
+
+    const identifiedUser = users.find(u => u.email === email && u.password === password);
+
+    if (!identifiedUser) {
+        throw new HttpError('Could not identify user, credentials seem to be wrong', 401);
+    }
+
+    res.json({message: 'Logged in!'});
+}
+
 exports.getUserById = getUserById
 exports.postUser = postUser
 exports.updateUser = updateUser
+exports.loginUser = loginUser

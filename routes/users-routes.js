@@ -4,6 +4,8 @@ const usersController = require("../controllers/users-controller")
 
 const router = express.Router();
 
+router.post('/loginUser', usersController.loginUser)
+
 router.patch('/updateUser', usersController.updateUser)
 
 router.post('/submitUser', usersController.postUser)
