@@ -52,7 +52,19 @@ const postPatientDetails = (req, res, next) => {
     res.status(201).json(newPatientDetails)
 }
 
+const updatePatientDetails = (req, res, next) => {
+    const {patient_id, patientLocation, patientContact} = req.body
+
+    const patientIndex = patientDetails.findIndex(n => n.patient_id === patient_id)
+
+    patientDetails[patientIndex].patientLocation = patientLocation
+    patientDetails[patientIndex].patientContact = patientContact
+
+    res.status(201).json({patientDetails: patientDetails[patientIndex]})
+}
+
 
 exports.getAllPatientDetails = getAllPatientDetails
 exports.getPatientbyId = getPatientbyId
 exports.postPatientDetails = postPatientDetails
+exports.updatePatientDetails = updatePatientDetails

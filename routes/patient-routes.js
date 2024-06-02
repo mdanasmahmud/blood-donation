@@ -4,6 +4,8 @@ const patientController = require('../controllers/patient-controller')
 
 const router = express.Router();
 
+router.post('/updatePatient', patientController.updatePatientDetails)
+
 router.post('/submitPatient', patientController.postPatientDetails)
 
 router.get('/', patientController.getAllPatientDetails);
