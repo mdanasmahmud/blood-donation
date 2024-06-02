@@ -38,5 +38,18 @@ const postUser = (req, res, next) => {
     res.status(201).json(newUser)
 }
 
+const updateUser = (req, res, next) => {
+    const {user_id, userName, password, email} = req.body
+
+    const userIndex = users.findIndex(n => n.user_id === user_id)
+
+    users[userIndex].userName = userName
+    users[userIndex].password = password
+    users[userIndex].email = email
+
+    res.status(201).json({message: "User update successfull"})
+}
+
 exports.getUserById = getUserById
 exports.postUser = postUser
+exports.updateUser = updateUser
