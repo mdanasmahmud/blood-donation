@@ -1,26 +1,28 @@
-const { v4: uuidv4 } = require('uuid');
-
 const User = require('../models/user-model')
 
 const HttpError = require('../models/http-error')
 
-const users = [
-    {user_id: '0', userName: 'Anas Mahmud', password:'1234', email:'abid1234@gmail.com'},
-    {user_id: '1', userName: 'John Doe', password:'4321', email:'johndoe1234@gmail.com'}
- ]
+ const getUserById = async (req, res, next) => {
+    const userId = req.params.user_id;
 
-const getUserById = (req, res, next) => {
-    const userId = (req.params.user_id);
-    const userOneId = users.find(p => {
-        return p.user_id === userId;
-    })
-    if(!userOneId){
-        throw new HttpError("User by the id not found", 404)
+    let user;
+    try {
+        user = await User.findById(userId);
+    } catch (err) {
+        const error = new HttpError(
+            'Fetching user failed, please try again later', 500
+        );
+        return next(error);
     }
-    else{
-        res.json({userOneId});
+
+    if (!user) {
+        const error = new HttpError(
+            'Could not find a user for the provided id.', 404
+        );
+        return next(error);
     }
-    
+
+    res.json({user: user.toObject({ getters: true })});
 }
 
 // To create a new User by signup
@@ -28,13 +30,10 @@ const getUserById = (req, res, next) => {
 const postUser = async (req, res, next) => {
     const {userName, password, email} = req.body;
 
-    // Set this up in later for mongodb
-
-    // const existingUser = users.find(u => u.email === email);
-
-    // if (existingUser) {
-    //     throw new HttpError('User with this email already exists', 409);
-    // }
+    const existingUser = await User.findOne({email: email});
+    if (existingUser) {
+        throw new HttpError('User with this email already exists', 409);
+    }
 
     const newUser = new User ({
         userName,
@@ -46,7 +45,7 @@ const postUser = async (req, res, next) => {
         await newUser.save()
     } catch (err) {
         const error = new HttpError(
-            "Creating blood doner failed", 500
+            "Creating user failed", 500
         )
         return next(error)
     }
@@ -54,34 +53,47 @@ const postUser = async (req, res, next) => {
     res.status(201).json(newUser)
 }
 
-const updateUser = (req, res, next) => {
+const updateUser = async (req, res, next) => {
     const {user_id, userName, password, email} = req.body
 
-    const userIndex = users.findIndex(n => n.user_id === user_id)
-
-    const existingUser = users.find(u => u.email === email && u.user_id !== user_id);
-
-    if (existingUser) {
-        throw new HttpError('User with this email already exists', 409);
+    try {
+        const user = await User.findById(user_id);
+        if (!user) {
+            throw new HttpError("User by the id not found", 404);
+        } else {
+            const existingUser = await User.findOne({email: email, _id: {$ne: user_id}});
+            if (existingUser) {
+                throw new HttpError('User with this email already exists', 409);
+            }
+            user.userName = userName;
+            user.password = password;
+            user.email = email;
+            await user.save();
+            res.status(201).json({message: "User update successful"});
+        }
+    } catch (err) {
+        const error = new HttpError(
+            "Updating user failed", 500
+        )
+        return next(error);
     }
-
-    users[userIndex].userName = userName
-    users[userIndex].password = password
-    users[userIndex].email = email
-
-    res.status(201).json({message: "User update successfull"})
 }
 
-const loginUser = (req, res, next) => {
+const loginUser = async (req, res, next) => {
     const {email, password} = req.body;
 
-    const identifiedUser = users.find(u => u.email === email && u.password === password);
-
-    if (!identifiedUser) {
-        throw new HttpError('Could not identify user, credentials seem to be wrong', 401);
+    try {
+        const identifiedUser = await User.findOne({email: email, password: password});
+        if (!identifiedUser) {
+            throw new HttpError('Could not identify user, credentials seem to be wrong', 401);
+        }
+        res.json({message: 'Logged in!'});
+    } catch (err) {
+        const error = new HttpError(
+            "Logging in failed", 500
+        )
+        return next(error);
     }
-
-    res.json({message: 'Logged in!'});
 }
 
 exports.getUserById = getUserById

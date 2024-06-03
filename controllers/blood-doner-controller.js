@@ -2,34 +2,43 @@ const HttpError = require('../models/http-error')
 
 const BloodDoner = require('../models/blood-donor-model')
 
-const donorList = [
-    {user_id: 0, donorName: 'Anas Mahmud', blood_group: 'A+'},
-    {user_id: 1, donorName: 'John Doe', blood_group: 'B+'},
-    {user_id: 2, donorName: 'Jane Smith', blood_group: 'O+'},
-    {user_id: 3, donorName: 'Emma Johnson', blood_group: 'AB+'},
-    {user_id: 4, donorName: 'Robert Brown', blood_group: 'A-'},
-    {user_id: 5, donorName: 'Olivia Davis', blood_group: 'B-'},
-    {user_id: 6, donorName: 'William Miller', blood_group: 'O-'},
-    {user_id: 7, donorName: 'Emily Wilson', blood_group: 'AB-'},
-]
 
-const getAllDoners = (req, res, next) => {
-    res.json({donorList});
+
+const getAllDoners = async (req, res, next) => {
+    let donors;
+    try {
+        donors = await BloodDoner.find({});
+    } catch (err) {
+        const error = new HttpError(
+            'Fetching donors failed, please try again later', 500
+        );
+        return next(error);
+    }
+
+    res.json({donors: donors.map(donor => donor.toObject({ getters: true }))});
 };
 
-const getDonersbyId = (req, res, next) => {
-    const bloodDonorId = Number(req.params.user_id);
-    const bloodDonor = donorList.find(p => {
-        return p.user_id === bloodDonorId;
-    })
-    console.log('user requested get');
+const getDonersbyId = async (req, res, next) => {
+    const donorId = req.params.user_id;
 
-    if(!bloodDonor){
-        throw new HttpError('Donor with the id not found');
+    let donor;
+    try {
+        donor = await BloodDoner.findOne({ user_id: donorId });
+    } catch (err) {
+        const error = new HttpError(
+            'Fetching donor failed, please try again later', 500
+        );
+        return next(error);
     }
-    else{
-        res.json({bloodDonor});
+
+    if (!donor) {
+        const error = new HttpError(
+            'Could not find a donor for the provided id.', 404
+        );
+        return next(error);
     }
+
+    res.json({donor: donor.toObject({ getters: true })});
 }
 
 // if someone wants to be a blood doner
@@ -58,15 +67,36 @@ const postBloodDoner = async (req, res, next) => {
 
 // A user can opt out from being a blood doner and it will delete their entry
 
-const deleteBloodDoner = (req, res, next) => {
+const deleteBloodDoner = async (req, res, next) => {
     const {user_id} = req.body;
 
-    const donorIndex = donorList.findIndex(d => d.user_id === user_id);
+    let donor;
+    try {
+        donor = await BloodDoner.findOne({ user_id: user_id });
+    } catch (err) {
+        const error = new HttpError(
+            'Fetching donor failed, please try again later', 500
+        );
+        return next(error);
+    }
 
-    donorList.splice(donorIndex, 1);
+    if (!donor) {
+        const error = new HttpError(
+            'Could not find a donor for the provided id.', 404
+        );
+        return next(error);
+    }
+
+    try {
+        await donor.remove();
+    } catch (err) {
+        const error = new HttpError(
+            'Deleting donor failed, please try again later', 500
+        );
+        return next(error);
+    }
 
     res.status(201).json({message: 'Deleted donor.'});
-
 }
 
 exports.getAllDoners = getAllDoners
