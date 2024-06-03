@@ -2,6 +2,8 @@ const { v4: uuidv4 } = require('uuid');
 
 const HttpError = require('../models/http-error')
 
+const Appointment = require('../models/appointment-model')
+
 const appointments = [
     { appointmentId: "a1", user_id: 0, date: "2024-06-01", time: "10:00 AM", patientLocationText: "Ibn Sina Hospital", patientPhone: "+12345678", status: "Confirmed" },
     { appointmentId: "a2", user_id: 1, date: "2024-06-02", time: "11:00 AM", patientLocationText: "City Health Clinic", patientPhone: "+87654321", status: "Pending" },
@@ -31,22 +33,26 @@ const getAppointmentsbyUser = (req, res, next) => {
 
 // We will trigger this post request when new appointments are set by the user
 
-const postAppointmentbyUser = (req, res, next) => {
-    const {user_id, date, time, patientLocationText, patientPhone, status} = req.body; // To get each data from the req.body, the post data will be sent in the body and we need to extract it
+const postAppointmentbyUser = async (req, res, next) => {
+    const {user_id, date, time, patientLocationText, patientPhone, status} = req.body;
 
-    const newAppointment = {
-        appointmentId: uuidv4(),
+    const newAppointment = new Appointment({
         user_id,
         date,
         time,
         patientLocationText,
         patientPhone,
         status
+    })
+    try{
+        await newAppointment.save();
+    } catch (err) {
+        const error = new HttpError(
+            "Creating appointment failed", 500
+        )
+        return next(error)
     }
 
-    appointments.unshift(newAppointment)
-
-    // 201 means it was a successful post requst and then it will show the data it had pushed through
     res.status(201).json(newAppointment)
 }
 

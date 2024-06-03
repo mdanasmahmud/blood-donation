@@ -1,5 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 
+const News = require('../models/news-model')
+
 const HttpError = require('../models/http-error')
 
 const newsList = [
@@ -37,19 +39,25 @@ const getNewsById = (req, res, next) => {
 
 // Admin can post news using the admin pannel that will be the use of posting news
 
-const postNews = (req, res, next) => {
+const postNews = async (req, res, next) => {
     const {newsTitle, shortDescription, newsDate, newsDescription, newsAuthor} = req.body;
 
-    const newNews = {
-        news_id: uuidv4(),
+    const newNews = new News({
         newsTitle,
         shortDescription,
         newsDate,
         newsDescription,
         newsAuthor
-    }
+    })
 
-    newsList.unshift(newNews)
+    try{
+        await newNews.save()
+    } catch (err) {
+        const error = new HttpError(
+            "Creating blood doner failed", 500
+        )
+        return next(error)
+    }
 
     res.status(201).json(newNews)
 

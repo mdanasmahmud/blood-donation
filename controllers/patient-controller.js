@@ -1,5 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 
+const Patient = require('../models/patient-model')
+
 const HttpError = require('../models/http-error')
 
 const patientDetails = [
@@ -35,19 +37,25 @@ const getPatientbyId = (req, res, next) => {
 
 // Any user can post a patient 
 
-const postPatientDetails = (req, res, next) => {
-    const {userPosted, newsDescription, patientName, patientBloodGroup, patientLocation, patientContact} = req.body;
+const postPatientDetails = async (req, res, next) => {
+    const {userPosted, patientName, patientBloodGroup, patientLocation, patientContact} = req.body;
 
-    const newPatientDetails = {
-        patient_id: uuidv4(),
+    const newPatientDetails = new Patient({
         userPosted,
         patientName,
         patientBloodGroup,
         patientLocation,
         patientContact
-    }
+    })
 
-    patientDetails.unshift(newPatientDetails)
+    try{
+        await newPatientDetails.save()
+    } catch (err) {
+        const error = new HttpError(
+            "Creating blood doner failed", 500
+        )
+        return next(error)
+    }
 
     res.status(201).json(newPatientDetails)
 }

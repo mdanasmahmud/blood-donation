@@ -1,5 +1,7 @@
 const HttpError = require('../models/http-error')
 
+const BloodDoner = require('../models/blood-donor-model')
+
 const donorList = [
     {user_id: 0, donorName: 'Anas Mahmud', blood_group: 'A+'},
     {user_id: 1, donorName: 'John Doe', blood_group: 'B+'},
@@ -32,17 +34,24 @@ const getDonersbyId = (req, res, next) => {
 
 // if someone wants to be a blood doner
 
-const postBloodDoner = (req, res, next) => {
+const postBloodDoner = async (req, res, next) => {
 
     const {user_id, donorName, blood_group} = req.body;
 
-    const newBloodDoner = {
+    const newBloodDoner = new BloodDoner({
         user_id,
         donorName,
         blood_group
-    }
+    })
 
-    donorList.unshift(newBloodDoner)
+    try{
+        await newBloodDoner.save();
+    } catch (err) {
+        const error = new HttpError(
+            "Creating blood doner failed", 500
+        )
+        return next(error)
+    }
 
     res.status(201).json(newBloodDoner)
 }

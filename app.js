@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const bloodDonorRoutes = require('./routes/blood-doner-routes')
 const newsRoute = require('./routes/news-routes')
@@ -25,5 +26,13 @@ app.use((error ,req, res, next) => { // Will take this as a error handling middl
     res.json({message: error.message || "Unknown Error!"});
 })
 
-app.listen(5000);
+mongoose
+    .connect("")
+    .then(() => {
+    app.listen(5000);
+                })
+    .catch(err => {
+        console.log(err);
+    })
+
 

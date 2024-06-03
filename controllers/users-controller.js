@@ -1,5 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 
+const User = require('../models/user-model')
+
 const HttpError = require('../models/http-error')
 
 const users = [
@@ -23,23 +25,31 @@ const getUserById = (req, res, next) => {
 
 // To create a new User by signup
 
-const postUser = (req, res, next) => {
+const postUser = async (req, res, next) => {
     const {userName, password, email} = req.body;
 
-    const existingUser = users.find(u => u.email === email);
+    // Set this up in later for mongodb
 
-    if (existingUser) {
-        throw new HttpError('User with this email already exists', 409);
-    }
+    // const existingUser = users.find(u => u.email === email);
 
-    const newUser = {
-        user_id: uuidv4(),
+    // if (existingUser) {
+    //     throw new HttpError('User with this email already exists', 409);
+    // }
+
+    const newUser = new User ({
         userName,
         password,
         email
-    }
+    })
 
-    users.unshift(newUser)
+    try{
+        await newUser.save()
+    } catch (err) {
+        const error = new HttpError(
+            "Creating blood doner failed", 500
+        )
+        return next(error)
+    }
 
     res.status(201).json(newUser)
 }
