@@ -3,24 +3,45 @@ import avatar from '../../images/avatar.png';
 import { NavLink } from 'react-router-dom';
 
 // Component if the user did not login
-const UserNotLogin = ({ setUserLoginStatus,userList, setUser}) => {
+const UserNotLogin = ({ setUserLoginStatus, setUser}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // Save the email and password here
         console.log(`Email: ${email}, Password: ${password}`);
-        const user = userList.find(user => user.email === email && user.password === password)
-        
-        if(user) {
-            setUserLoginStatus(true);
-            setUser(user); // Save the user data
-        } else {
+    
+        const userData = {
+            email: email,
+            password: password
+        };
+    
+        try {
+            const response = await fetch('http://localhost:5000/api/users/loginUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+    
+            if (data.message === 'Logged in!') {
+                setUserLoginStatus(true);
+                setUser(userData); // Save the user data
+            } else {
+                alert('Invalid email or password');
+            }
+        } catch (error) {
+            console.error('Error:', error);
             alert('Invalid email or password');
         }
-
-        
     };
 
     return (

@@ -10,17 +10,45 @@ const SignUpComponent = () => {
     const [registerConfirmPassword, setregisterConfirmPassword] = useState('')
 
     const [signupFlag, setSignupFlag] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const SignUpFlagTrigger = () => {
-        setSignupFlag(true)
-        setTimeout(() => {
-            setSignupFlag(false)
-        }, 3000)
+        const userData = {
+            userName: registerEmail.split('@')[0], // assuming the username is the part before '@' in the email
+            password: registerPassword,
+            email: registerEmail
+        };
+
+        if (registerPassword.length < 6) {
+            setErrorMessage('Password must be at least 6 characters');
+            return;
+        }
+    
+        fetch('http://localhost:5000/api/users/submitUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                setSignupFlag(true);
+                setTimeout(() => {
+                    setSignupFlag(false);
+                }, 3000);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
 
     return (
             <>
             {signupFlag && <BannerComponent message={`Check ${registerEmail} to verify your email`} />}
+            {errorMessage && <BannerComponent message={errorMessage} />}
             <section class="bg-gray-50 dark:bg-gray-900">
             <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
