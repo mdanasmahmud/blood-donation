@@ -3,12 +3,11 @@ import React, {useState} from 'react'
 import BloodNeededListComponent from '../Components/BloodNeeded/BloodNeededListComponent';
 import BloodNeededSearchComponent from '../Components/BloodNeeded/BloodNeededSearchComponent';
 import BloodNeededDetailsComponent from '../Components/BloodNeeded/BloodNeededDetailsComponent';
+import BloodNeededPost from '../Components/BloodNeeded/BloodNeededPost';
 
 const BloodNeededPage = (props) => {
   
   const [searchedText, setSearchedText] = useState('')
-
-  
 
   // This is for search function
 
@@ -29,8 +28,14 @@ const BloodNeededPage = (props) => {
     <div>
       
       <BloodNeededSearchComponent searchedText={searchedText} setSearchedText={setSearchedText} patientDetails={props.patientDetails}/>
+
+      <div className='flex justify-center'>
+        <BloodNeededPost />
+        <BloodNeededListComponent patientDetails={patientDetail} clickedPatientId={clickedPatientId} setClickedPatientId={setClickedPatientId}/>
+        
+      </div>
       
-      <BloodNeededListComponent patientDetails={patientDetail} clickedPatientId={clickedPatientId} setClickedPatientId={setClickedPatientId}/>
+      
       
       <BloodNeededDetailsComponent patientDeeperDetails = {patientDeeperDetails} setClickedPatientId={setClickedPatientId}/>
     </div>

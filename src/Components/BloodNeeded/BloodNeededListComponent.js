@@ -1,8 +1,10 @@
 import React from 'react'
 
 const BloodNeededListComponent = ({patientDetails, setClickedPatientId}) => {
+
+
   return (
-    <div className='max-w-screen-xl justify-between mx-auto'>
+    <div className='max-w-screen-xl m-3'>
         <div class="ml-auto max-w-screen-md m-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
