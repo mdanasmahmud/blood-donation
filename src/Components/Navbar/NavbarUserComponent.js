@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import avatar from '../../images/avatar.png';
 import { NavLink } from 'react-router-dom';
 
+import { AuthContext } from "../../context/auth-contex";
+
+
+
 // Component if the user did not login
-const UserNotLogin = ({ setUserLoginStatus, setUser}) => {
+const UserNotLogin = () => {
+
+    const auth = useContext(AuthContext)
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -33,8 +40,7 @@ const UserNotLogin = ({ setUserLoginStatus, setUser}) => {
             const data = await response.json();
     
             if (data.message === 'Logged in!') {
-                setUserLoginStatus(true);
-                setUser(userData); // Save the user data
+                auth.login()
             } else {
                 alert('Invalid email or password');
             }
@@ -87,17 +93,19 @@ const UserNotLogin = ({ setUserLoginStatus, setUser}) => {
 };
 
 // Component if the user did login (Currently no user so the data is static)
-const UserLoggedin = ({ setUserLoginStatus,  user  }) => {
-    const handleSignOut = () => {
-        setUserLoginStatus(false);
-        localStorage.setItem('userLoginStatus', false);
-    };
+const UserLoggedin = () => {
+
+    const auth = useContext(AuthContext)
+
+    const signOutHandler = () => {
+        auth.logout()
+    }
 
     return (
         <div className="absolute mt-2 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600" id="userDropdown">
             <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                {user && <div className="font-medium truncate">{user.userName}</div>}
-                {user && <div className="font-medium truncate">{user.email}</div>} {/* Check if user is not null before accessing its properties */}
+                {<div className="font-medium truncate">Checking username</div>}
+                {<div className="font-medium truncate">Checking mail</div>} {/* Check if user is not null before accessing its properties */}
             </div>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                 <li>
@@ -108,26 +116,15 @@ const UserLoggedin = ({ setUserLoginStatus,  user  }) => {
                 </li>
             </ul>
             <div className="py-1">
-                <a href="#" onClick={handleSignOut} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+                <a href="#" onClick={signOutHandler} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
             </div>
         </div>
     );
 }
 
-const NavbarUserComponent = (props) => {
-    const [userLoginStatus, setUserLoginStatus] = useState(false);
-    const [user, setUser] = useState(null);
+const NavbarUserComponent = () => {
 
-    useEffect(() => {
-        const status = localStorage.getItem('userLoginStatus');
-        setUserLoginStatus(status === 'true');
-    }, []);
-
-    const handleLogin = (status) => {
-        localStorage.setItem('userLoginStatus', status);
-        setUserLoginStatus(status);
-        console.log(status);
-    };
+    const auth = useContext(AuthContext)
 
     useEffect(() => {
         // Reattach the dropdown functionality when the login status changes
@@ -147,12 +144,12 @@ const NavbarUserComponent = (props) => {
         return () => {
             avatarButton.removeEventListener('click', toggleDropdown);
         };
-    }, [userLoginStatus]);
+    }, [auth.isLoggedIn]);
 
     return (
         <div className="relative">
             <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start" className="w-10 h-10 rounded-full cursor-pointer" src={avatar} alt="User dropdown"></img>
-            {userLoginStatus ? <UserLoggedin setUserLoginStatus={setUserLoginStatus} user={user} /> : <UserNotLogin setUserLoginStatus={handleLogin} setUser={setUser} userList={props.userList} />}
+            {auth.isLoggedIn ? <UserLoggedin /> : <UserNotLogin />}
         </div>
     );
 }

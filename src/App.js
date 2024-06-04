@@ -1,5 +1,5 @@
-import React from 'react'
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import React, { useState, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './Components/Navbar/NavbarComponent';
 import Footer from './Components/Footer/FooterComponent';
@@ -14,7 +14,8 @@ import BloodNeededPage from './Pages/BloodNeededPage';
 import TimelineDetails from './Components/HomePage/Timeline/TimelineDetailsComponent';
 import SignUpComponent from './Components/Others/SignUpComponent';
 import ForgotPasswordComponent from './Components/Others/ForgotPasswordComponent';
-import PrivateRoute from './Components/User/PrivateRouteComponent';
+
+import { AuthContext } from './context/auth-contex';
 
 function App() {
 
@@ -74,24 +75,57 @@ const appointments = [
   { appointmentId: "a10", user_id: 1, date: "2024-06-10", time: "11:30 AM", patientLocationText: "Northwest Health Center", patientPhone: "+202020202", status: "Pending" }
 ];
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  let routes;
+
+  if (isLoggedIn) {
+    routes = (
+      <React.Fragment>
+        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length} />} />
+        <Route path='find-donor' element={<FindDonor donorList={donorList} />} />
+        <Route path='blood-needed' element={<BloodNeededPage patientDetails={patientDetails} />} />
+        <Route path='news/' element={<TimelineList newsList={newsList} />} />
+        <Route path='news/:news_id/' element={<TimelineDetails newsList={newsList} />} />
+        <Route path='about/' element={<AboutPage />} />
+        <Route path='user/dashboard/*' element={<UserDashboardPage appointmentDetails={appointments} />} />
+        <Route path='*' element={<Navigate to='/' />} />
+      </React.Fragment>
+    );
+  } else {
+    routes = (
+      <React.Fragment>
+        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length} />} />
+        <Route path='find-donor' element={<FindDonor donorList={donorList} />} />
+        <Route path='blood-needed' element={<BloodNeededPage patientDetails={patientDetails} />} />
+        <Route path='news/' element={<TimelineList newsList={newsList} />} />
+        <Route path='news/:news_id/' element={<TimelineDetails newsList={newsList} />} />
+        <Route path='about/' element={<AboutPage />} />
+        <Route path='sign-up/' element={<SignUpComponent />} />
+        <Route path='forgot-password/' element={<ForgotPasswordComponent />} />
+        
+      </React.Fragment>
+    );
+  }
 
   return (
-    <Router>
-      <Navbar userList={users}/>
-      <Routes>
-        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length}/>} />
-        <Route path='find-donor' element={<FindDonor donorList={donorList}/>}/>
-        <Route path='blood-needed' element={<BloodNeededPage patientDetails={patientDetails}/>}/>
-        <Route path='news/' element={<TimelineList newsList={newsList}/>}/>
-        <Route path='news/:news_id/' element={<TimelineDetails newsList={newsList}/>} />
-        <Route path='about/' element={<AboutPage />}/>
-        <Route path='sign-up/' element={<SignUpComponent />}/>
-        <Route path='forgot-password/' element={<ForgotPasswordComponent />}/>
-        <Route path='user/dashboard/*' element={<PrivateRoute><UserDashboardPage  appointmentDetails={appointments}/></PrivateRoute>}/>
-      </Routes>
-      <Footer/>
-    </Router>
+    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+      <Router>
+        <Navbar userList={users} />
+        <Routes>
+          {routes}
+        </Routes>
+        <Footer />
+      </Router>
+    </AuthContext.Provider>
   );
 }
 
