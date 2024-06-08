@@ -15,7 +15,7 @@ const BloodNeededPost = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
-      userPosted: "auth.userId", // assuming auth.userId contains the id of the logged in user
+      userPosted: auth.userId,
       patientName,
       patientBloodGroup: bloodGroup,
       patientLocation: location,
@@ -27,7 +27,9 @@ const BloodNeededPost = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": 'Bearer ' + auth.token,
         },
+        
         body: JSON.stringify(formData),
       });
   
