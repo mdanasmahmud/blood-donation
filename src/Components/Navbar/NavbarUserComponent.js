@@ -17,7 +17,6 @@ const UserNotLogin = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         // Save the email and password here
-        console.log(`Email: ${email}, Password: ${password}`);
     
         const userData = {
             email: email,
@@ -32,15 +31,16 @@ const UserNotLogin = () => {
                 },
                 body: JSON.stringify(userData)
             });
+            
     
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
     
             const data = await response.json();
-    
-            if (data.message === 'Logged in!') {
-                auth.login()
+
+            if (data.token) {
+                auth.login(data.userId, data.token);
             } else {
                 alert('Invalid email or password');
             }
@@ -145,6 +145,8 @@ const NavbarUserComponent = () => {
             avatarButton.removeEventListener('click', toggleDropdown);
         };
     }, [auth.isLoggedIn]);
+
+    
 
     return (
         <div className="relative">
