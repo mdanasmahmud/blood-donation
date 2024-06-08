@@ -75,19 +75,27 @@ const appointments = [
   { appointmentId: "a10", user_id: 1, date: "2024-06-10", time: "11:30 AM", patientLocationText: "Northwest Health Center", patientPhone: "+202020202", status: "Pending" }
 ];
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [token, setToken] = useState(false);
+const [userId, setUserId] = useState(false);
 
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
+const login = useCallback((uid, token) => {
+    setToken(token);
+    setUserId(uid);
+}, []);
 
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
+const logout = useCallback(() => {
+    setToken(null);
+    setUserId(null);
+}, []);
+
+  // To send a post request you need to add the token as the header
+
+  // so await sendRequest("localhost:5000/api/appointment", "POST", formData, {Authorization: 'Bearer' + auth.token})
+  // Else it will not be able to access the backend
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <React.Fragment>
         <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length} />} />
@@ -111,13 +119,20 @@ const appointments = [
         <Route path='about/' element={<AboutPage />} />
         <Route path='sign-up/' element={<SignUpComponent />} />
         <Route path='forgot-password/' element={<ForgotPasswordComponent />} />
-        
+        <Route path='*' element={<Navigate to='/' />} />
       </React.Fragment>
     );
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+    <AuthContext.Provider 
+    value={{ 
+      isLoggedIn: !!token,
+      token: token,
+      userId: userId,
+      login: login,
+      logout: logout
+      }}>
       <Router>
         <Navbar userList={users} />
         <Routes>
