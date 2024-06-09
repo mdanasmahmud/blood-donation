@@ -41,7 +41,7 @@ const BloodNeededListComponent = ({patientDetails, setClickedPatientId}) => {
                                 
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    setClickedPatientId(patient.patient_id);
+                                    setClickedPatientId(patient._id);
                                   }}
                                 
                                 >Details</a>
