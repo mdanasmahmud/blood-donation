@@ -5,7 +5,7 @@ import NavbarUserComponent from './NavbarUserComponent';
 
 import bloodLogo from '../../images/blood-logo.png';
 
-function Navbar(props) {
+function Navbar() {
   return (
 
 
@@ -28,7 +28,7 @@ function Navbar(props) {
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
         </svg>
     </button>
-    <NavbarUserComponent userList={props.userList}/>
+    <NavbarUserComponent/>
 </div>
 
   <div class="ml-14 items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">

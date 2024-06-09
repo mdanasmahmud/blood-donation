@@ -44,11 +44,6 @@ const newsList = [
   {news_id: 10, newsTitle: 'Year End Review', shortDescription: 'Looking back at our achievements this year', newsDate: '11-01-2021', newsDescription: 'Looking back at our achievements this year. We couldnt have done it without you.', newsAuthor: 'Anas'},
 ];
 
-const users = [
-   {user_id: 0, userName: 'Anas Mahmud', password:'1234', email:'abid1234@gmail.com'},
-   {user_id: 1, userName: 'John Doe', password:'4321', email:'johndoe1234@gmail.com'}
-]
-
 const appointments = [
   { appointmentId: "a1", user_id: 0, date: "2024-06-01", time: "10:00 AM", patientLocationText: "Ibn Sina Hospital", patientPhone: "+12345678", status: "Confirmed" },
   { appointmentId: "a2", user_id: 1, date: "2024-06-02", time: "11:00 AM", patientLocationText: "City Health Clinic", patientPhone: "+87654321", status: "Pending" },
@@ -121,7 +116,7 @@ const logout = useCallback(() => {
       logout: logout
       }}>
       <Router>
-        <Navbar userList={users} />
+        <Navbar/>
         <Routes>
           {routes}
         </Routes>
