@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { AuthContext } from '../../context/auth-contex';
 
 const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId }) => {
 
-  const [applyBloodDonateFlag, setApplyBloodDonateFlag] = useState(false)
+  const auth = useContext(AuthContext)
 
-  // Use effect because we are waiting for the value of applyBloodDonate to change and after it changes we remove the previous modal
+  const [applyBloodDonateFlag, setApplyBloodDonateFlag] = useState(false);
+  const [isEligible, setIsEligible] = useState(null); // To store eligibility result
+
   useEffect(() => {
-    setClickedPatientId('')
-    console.log(applyBloodDonateFlag);
+    setClickedPatientId('');
+    
   }, [applyBloodDonateFlag]);
 
   const applyHandler = () => {
     setApplyBloodDonateFlag(patientDeeperDetails);
-  }
+  };
 
   const [submitEligibleForm, setSubmitEligibleForm] = useState({
     name: '',
@@ -36,9 +39,66 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
       ...submitEligibleForm,
       [name]: type === 'checkbox' ? checked : value
     });
+  };
 
-    console.log(submitEligibleForm)
-  }
+  const calculateEligibility = () => {
+    // Add your eligibility logic here
+    const {
+      lastBloodDonation,
+      fluLikeSymptoms,
+      vaccinations,
+      antibiotics,
+      hivHepatitis,
+      pregnancy
+    } = submitEligibleForm;
+
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+    const isEligible = new Date(lastBloodDonation) <= sixMonthsAgo &&
+      !fluLikeSymptoms &&
+      !vaccinations &&
+      !antibiotics &&
+      !hivHepatitis &&
+      !pregnancy;
+
+    setIsEligible(isEligible ? 'Yes' : 'No');
+  };
+
+  const handleSubmit = async () => {
+    calculateEligibility();
+
+    const donorData = {
+      donorUserID: 'sdasd',
+      donorName: submitEligibleForm.name,
+      donorBloodGroup: submitEligibleForm.bloodGroup,
+      donorPhone: submitEligibleForm.phone,
+      DonorEligible: isEligible
+    };
+    // console.log('Here is the patientDeeperDetails')
+    // console.log(applyBloodDonateFlag)
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/patients/addDonor/${applyBloodDonateFlag._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + auth.token
+        },
+        body: JSON.stringify(donorData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Success:', data);
+      setSubmitEligibleForm('')
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <>
@@ -226,7 +286,7 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
                         </form>
 
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => setSubmitEligibleForm('')}>
+              <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={handleSubmit}>
                 Submit
               </button>
               <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={() => setApplyBloodDonateFlag(false)}>
