@@ -51,9 +51,9 @@ const UserNotLogin = () => {
     };
 
     return (
-        <div className="absolute mt-2 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-900 dark:divide-gray-600" id="userDropdown">
+        <div className="absolute ml-10 mt-5 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-900 dark:divide-gray-600" id="userDropdown">
             <div className="flex flex-col items-center justify-center">
-                <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Sign in
@@ -102,7 +102,7 @@ const UserLoggedin = () => {
     }
 
     return (
-        <div className="absolute mt-2 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600" id="userDropdown">
+        <div className="absolute mt-5 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600" id="userDropdown">
             <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                 {<div className="font-medium truncate">Checking username</div>}
                 {<div className="font-medium truncate">Checking mail</div>} {/* Check if user is not null before accessing its properties */}
