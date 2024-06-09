@@ -108,22 +108,28 @@ const logout = useCallback(() => {
 
   return (
     <AuthContext.Provider 
-    value={{ 
-      isLoggedIn: !!token,
-      token: token,
-      userId: userId,
-      login: login,
-      logout: logout
-      }}>
-      <Router>
-        <Navbar/>
-        <Routes>
-          {routes}
-        </Routes>
-        <Footer />
-      </Router>
+      value={{ 
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        login: login,
+        logout: logout
+      }}
+    >
+      <div className="flex flex-col min-h-screen">
+        <Router>
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              {routes}
+            </Routes>
+          </main>
+          <Footer />
+        </Router>
+      </div>
     </AuthContext.Provider>
   );
+  
 }
 
 export default App;
