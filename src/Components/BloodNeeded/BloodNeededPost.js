@@ -15,45 +15,45 @@ const BloodNeededPost = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
-      userPosted: auth.userId,
-      patientName,
-      patientBloodGroup: bloodGroup,
-      patientLocation: location,
-      patientContact:contact
+        userPosted: auth.userId,
+        patientName,
+        patientBloodGroup: bloodGroup,
+        patientLocation: location,
+        patientContact: contact,
+        blood_donors: []
     };
-  
+
     try {
-      const response = await fetch("http://localhost:5000/api/patients/submitPatient", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer ' + auth.token,
-        },
-        
-        body: JSON.stringify(formData),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to post patient details");
-      }
-  
-      const data = await response.json();
-      setIsPosted(true);
+        const response = await fetch("http://localhost:5000/api/patients/submitPatient", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": 'Bearer ' + auth.token,
+            },
+            body: JSON.stringify(formData),
+        });
 
-      
-      // Clearing all the states
-      setPatientName("");
-      setBloodGroup("");
-      setLocation("");
-      setContact("");
+        if (!response.ok) {
+            throw new Error("Failed to post patient details");
+        }
 
-      setTimeout(() => {
-        setIsPosted(false)
-      }, 5000)
+        const data = await response.json();
+        setIsPosted(true);
+
+        // Clearing all the states
+        setPatientName("");
+        setBloodGroup("");
+        setLocation("");
+        setContact("");
+
+        setTimeout(() => {
+            setIsPosted(false)
+        }, 5000);
     } catch (error) {
-      console.error("Error:", error);
+        console.error("Error:", error);
     }
-  };
+};
+
 
   return !auth.isLoggedIn ? (
     <div class="mt-8">
