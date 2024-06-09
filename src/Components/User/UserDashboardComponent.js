@@ -1,13 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/auth-contex";
 
+import UserDashboardAppointmentComponent from "./UserDashboardAppointmentComponent";
+
 const UserDashboardComponent = () => {
   const auth = useContext(AuthContext);
 
   const [updateLocation, setUpdateLocation] = useState('');
   const [updateContact, setUpdateContact] = useState('');
   const [updateTrigger, setUpdateTrigger] = useState(false);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // When user presses the Blood donor modal to check each blood donors that are willing to stay
+  const [isBloodDonorModalOpen, setIsBloodDonorModalOpen] = useState(false)
+  const [patientBloodDonors, setPatientBloodDonors] = useState({})
+
+
   const [editingPatient, setEditingPatient] = useState(null);
   const [patients, setPatients] = useState([]);
 
@@ -54,6 +62,15 @@ const UserDashboardComponent = () => {
     const data = await response.json();
   };
 
+  const openPatientBloodDonorModal = (bloodDonors) => {
+    setPatientBloodDonors(bloodDonors)
+    setIsBloodDonorModalOpen(true)
+  }
+
+  const closePatientBloodDonorModal = () => {
+    setIsBloodDonorModalOpen(false)
+  }
+
   const openModal = (patient) => {
     setEditingPatient(patient);
     setIsModalOpen(true);
@@ -93,19 +110,7 @@ const UserDashboardComponent = () => {
         <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Name: Test Name</p>
         <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Blood Group: A +</p>
       </div>
-      <div className="m-8 max-w-screen-xl flex flex-wrap items-center justify-between mx-auto w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-        <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Appointments</h5>
-        <div>
-          <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Appointment ID: a1</p>
-          <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Blood Group: A +</p>
-        </div>
-        <div>
-          <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Date: 2024-01-10</p>
-          <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Time: 10:00 AM</p>
-          <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Location: City Health Clinic</p>
-          <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Status: Confirmed</p>
-        </div>
-      </div>
+      <UserDashboardAppointmentComponent />
       <div className="m-8 max-w-screen-xl flex  flex-wrap items-center justify-between mx-auto w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Patients</h5>
         {patients.map((patient) => (
@@ -119,26 +124,27 @@ const UserDashboardComponent = () => {
               <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Patient Location: {patient.patientLocation}</p>
               <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Patient Contact: {patient.patientContact}</p>
             </div>
-            <div>
-              <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Post Status: Active</p>
-              <button
-                type="button"
-                className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                onClick={() => deletePatientDetails(patient.id)}
-              >
-                Delete Post
-              </button>
-              <button
-                type="button"
-                className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                onClick={() => openModal(patient)}
-              >
-                Update Post
-              </button>
+            <div className="flex flex-col">
+              <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-4" onClick={() => openPatientBloodDonorModal(patient.blood_donors)} >Blood Donors</button>
+                <button
+                  type="button"
+                  className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-4"
+                  onClick={() => openModal(patient)}
+                >
+                  Update Post
+                </button>
+                <button
+                  type="button"
+                  className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                  onClick={() => deletePatientDetails(patient.id)}
+                >
+                  Delete Post
+                </button>
             </div>
           </div>
         ))}
       </div>
+      {/* This modal is to update the post */}
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div className="absolute w-full h-full bg-black opacity-50"></div>
@@ -198,6 +204,78 @@ const UserDashboardComponent = () => {
                 type="button"
                 className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* This is for blood donor modal when user wants to check how many blood donor wants to donate blood */}
+      {isBloodDonorModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+          <div className="absolute w-full h-full bg-black opacity-50"></div>
+          <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
+            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Blood Donor Details
+              </h3>
+            </div>
+            <div className="p-4 md:p-5 space-y-4">
+              <div className="relative z-0 w-full mb-5 group">
+              <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            
+                            <th scope="col" class="px-6 py-3">
+                                Donor Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Blood Group
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Phone
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Eligible
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                          {patientBloodDonors.map((donor, index) => (
+                            <tr key={index} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            
+                            <td class="px-6 py-4">
+                                {donor.donorName}
+                            </td>
+                            <td class="px-6 py-4">
+                                {donor.donorBloodGroup}
+                            </td>
+                            <td class="px-6 py-4">
+                                {donor.donorPhone}
+                            </td>
+                            <td class="px-6 py-4">
+                                {donor.DonorEligible}
+                            </td>
+                            
+                          </tr>
+                          ))}
+                        
+                    </tbody>
+                </table>
+            </div>
+              </div>
+            </div>
+            <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+              
+              <button
+                type="button"
+                className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                onClick={() => closePatientBloodDonorModal()}
               >
                 Cancel
               </button>
