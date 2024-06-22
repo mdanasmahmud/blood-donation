@@ -3,14 +3,13 @@ import { AuthContext } from '../../context/auth-contex';
 
 const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId }) => {
 
-  const auth = useContext(AuthContext)
+  const auth = useContext(AuthContext);
 
   const [applyBloodDonateFlag, setApplyBloodDonateFlag] = useState(false);
   const [isEligible, setIsEligible] = useState(null); // To store eligibility result
 
   useEffect(() => {
     setClickedPatientId('');
-    
   }, [applyBloodDonateFlag]);
 
   const applyHandler = () => {
@@ -69,17 +68,15 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
     calculateEligibility();
 
     const donorData = {
-      donorUserID: 'sdasd',
+      donorUserID: auth.userId,
       donorName: submitEligibleForm.name,
       donorBloodGroup: submitEligibleForm.bloodGroup,
       donorPhone: submitEligibleForm.phone,
       DonorEligible: isEligible
     };
-    // console.log('Here is the patientDeeperDetails')
-    // console.log(applyBloodDonateFlag)
 
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/addDonor/${applyBloodDonateFlag._id}`, {
+      const response = await fetch(`http://localhost:5000/api/patients/addDonor/${applyBloodDonateFlag?._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,11 +91,52 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
 
       const data = await response.json();
       console.log('Success:', data);
-      setSubmitEligibleForm('')
+      setSubmitEligibleForm('');
     } catch (error) {
       console.error('Error:', error);
     }
+
+    console.log(applyBloodDonateFlag)
+
+    if (applyBloodDonateFlag) {
+      const appointmentData = {
+        user_id: auth.userId,
+        patientName: applyBloodDonateFlag.patientName,
+        patientLocationText: applyBloodDonateFlag.patientLocation,
+        patientPhone: applyBloodDonateFlag.patientContact,
+        preferredTime: 'temp Time now',
+        patientBloodGroup: applyBloodDonateFlag.patientBloodGroup,
+        status: 'Pending'
+      };
+
+      try {
+        const response = await fetch('http://localhost:5000/api/appointments/submitAppointment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(appointmentData)
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok Appointment');
+        }
+
+        const data = await response.json();
+        console.log('Success:', data);
+        setSubmitEligibleForm('');
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    } else {
+      console.log("patientDeeperDetails is undefined");
+    }
   };
+
+  // This try is to post the appointment data of the user
+
+  
+
 
   return (
     <>
