@@ -1,8 +1,41 @@
-import React from "react";
+import React, {useEffect} from 'react';
 
 const UserProfileComponent = () => {
+
+
+    // This use effect is used to show the medical tabs
+    useEffect(() => {
+        const tabs = document.querySelectorAll('[data-tabs-target]');
+        const tabContents = document.querySelectorAll('[role="tabpanel"]');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = document.querySelector(tab.dataset.tabsTarget);
+
+                tabContents.forEach(tc => {
+                    tc.classList.add('hidden');
+                });
+
+                tabs.forEach(t => {
+                    t.classList.remove('text-blue-600', 'dark:text-blue-500');
+                    t.classList.add('hover:text-gray-600', 'dark:hover:text-gray-300');
+                });
+
+                target.classList.remove('hidden');
+                tab.classList.add('text-blue-600', 'dark:text-blue-500');
+                tab.classList.remove('hover:text-gray-600', 'dark:hover:text-gray-300');
+            });
+        });
+
+        // Show the first tab by default
+        if (tabs.length > 0) {
+            tabs[0].click();
+        }
+    }, []);
+
+    
+
     return (
-        
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                             <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
