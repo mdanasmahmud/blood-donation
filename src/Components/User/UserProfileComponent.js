@@ -6,8 +6,6 @@ const UserProfileComponent = () => {
 
     const auth = useContext(AuthContext)
 
-    const [userPassword, setUserPassword] = useState()
-
     const [userProfileData, setUserProfileData] = useState({
         first_name: '',
         last_name: '',
@@ -48,6 +46,48 @@ const UserProfileComponent = () => {
         const data = await response.json()
 
         
+    };
+
+    // This is for medical information fetcing
+
+    const [medicalFormData, setMedicalFormData] = useState({
+        blood_group: '',
+        height: '',
+        pre_existing_conditions: '',
+        surgeries: '',
+        blood_transfusion: false,
+        smoke: false,
+        drug_abuse: false,
+        alcohol: false,
+    });
+
+    const handleMedicalChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setMedicalFormData({
+            ...medicalFormData,
+            [name]: type === 'checkbox' ? checked : value
+        });
+    };
+
+    const handleMedicalSubmit = async (e) => {
+        e.preventDefault();
+        console.log(medicalFormData);
+        
+        const response = await fetch(`http://localhost:5000/api/users/updateUserMedicalProfile/${auth.userId}`,{
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + auth.token
+            },
+            body: JSON.stringify(medicalFormData)
+        });
+
+        if(!response.ok){
+            throw new Error("Failed to update the Medical Profiler")
+        }
+
+        const data = await response.json()
+
     };
 
 
@@ -125,10 +165,6 @@ const UserProfileComponent = () => {
                                 </div>
                             </div>
                             <div className="relative z-0 w-full mb-5 group">
-                                <input type="email" name="email" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required onChange={userProfileDataHandler} />
-                                <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
-                            </div>
-                            <div className="relative z-0 w-full mb-5 group">
                                 <input type="text" name="home_address" id="home_address" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required onChange={userProfileDataHandler} />
                                 <label htmlFor="home_address" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Home address</label>
                             </div>
@@ -142,10 +178,7 @@ const UserProfileComponent = () => {
                                     <label htmlFor="emergency_phone_number" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Emergency phone number</label>
                                 </div>
                             </div>
-                            <div className="relative z-0 w-full mb-5 group">
-                                <input type="password" name="password" id="password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required onChange={(e) => setUserPassword(e.target.value)} />
-                                <label htmlFor="password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Type Password To Save</label>
-                            </div>
+
                             <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                         </form>
                     </div>
@@ -153,14 +186,12 @@ const UserProfileComponent = () => {
                     <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="services" role="tabpanel" aria-labelledby="services-tab">
                     <h2 class="text-left mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Edit Your Medical Profile</h2>
 
-                        <form class="max-w-md">
-                        {/* This is for selecting blood group */}
-                        <div class="grid md:grid-cols-2 md:gap-6">
-                            <div class="relative z-0 w-full mb-5 group">
-                                <form class="max-w-sm mx-auto">
-                                    <label for="underline_select" class="sr-only">Blood Group</label>
-                                    <select id="underline_select" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                                        <option selected>Select your blood group</option>
+                    <form className="max-w-md" onSubmit={handleMedicalSubmit}>
+                            <div className="grid md:grid-cols-2 md:gap-6">
+                                <div className="relative z-0 w-full mb-5 group">
+                                    <label htmlFor="blood_group" className="sr-only">Blood Group</label>
+                                    <select name="blood_group" id="blood_group" className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange={handleMedicalChange}>
+                                        <option value="">Select your blood group</option>
                                         <option value="A+">A+</option>
                                         <option value="A-">A-</option>
                                         <option value="B+">B+</option>
@@ -170,74 +201,50 @@ const UserProfileComponent = () => {
                                         <option value="AB+">AB+</option>
                                         <option value="AB-">AB-</option>
                                     </select>
-                                </form>
-                            
+                                </div>
+                                <div className="relative z-0 w-full mb-5 group">
+                                    <input type="number" name="height" id="height" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required onChange={handleMedicalChange} />
+                                    <label htmlFor="height" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Enter height in cm</label>
+                                </div>
                             </div>
-                            {/* This is for selecting the height */}
-                            <div class="relative z-0 w-full mb-5 group">
-                                <input type="number" name="floating_number" id="floating_number" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                <label for="floating_number" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Enter height in cm</label>
+                            <div className="relative z-0 w-full mb-5 group">
+                                <input type="text" name="pre_existing_conditions" id="pre_existing_conditions" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required onChange={handleMedicalChange} />
+                                <label htmlFor="pre_existing_conditions" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pre-existing conditions (e.g., heart disease, diabetes)</label>
                             </div>
-                        </div>
-                        {/* Asking for pre existing conditions */}
-                        <div class="relative z-0 w-full mb-5 group">
-                            <div class="relative z-0 w-full mb-5 group">
-                                <input type="text" name="floating_pre_existing_condition" id="floating_pre_existing_condition" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                <label for="floating_pre_existing_condition" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pre-existing conditions (e.g., heart disease, diabetes)</label>
+                            <div className="relative z-0 w-full mb-5 group">
+                                <input type="text" name="surgeries" id="surgeries" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required onChange={handleMedicalChange} />
+                                <label htmlFor="surgeries" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Recent surgeries or medical procedures</label>
                             </div>
-                        </div>
-
-                        {/* Asking for surgeries or medical procedures */}
-                        <div class="relative z-0 w-full mb-5 group">
-                            <div class="relative z-0 w-full mb-5 group">
-                                <input type="text" name="floating_pre_surgeries" id="floating_pre_surgeries" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                <label for="floating_pre_surgeries" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Recent surgeries or medical procedures.</label>
-                            </div>
-                        </div>
-
-                        <h2 class="text-left mb-3 text-1xl font-extrabold tracking-tight text-gray-900 dark:text-white">Toggle the answers (Gray = no, Blue = yes)</h2>
-                        <div class="relative z-0 w-full mb-5 group">
-                            {/* Asking history of blood transfusion */}
-                            <div class="relative z-0 w-full mb-5 group">
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <span class="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">History of blood transfusion? </span>
-                                    <input type="checkbox" value="" class="sr-only peer"/>
-                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <h2 className="text-left mb-3 text-1xl font-extrabold tracking-tight text-gray-900 dark:text-white">Toggle the answers (Gray = no, Blue = yes)</h2>
+                            <div className="relative z-0 w-full mb-5 group">
+                                <label className="inline-flex items-center cursor-pointer">
+                                    <span className="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">History of blood transfusion? </span>
+                                    <input type="checkbox" name="blood_transfusion" value={medicalFormData.blood_transfusion} className="sr-only peer" onChange={handleMedicalChange} />
+                                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            {/* Asking if they smoke */}
-                            <div class="relative z-0 w-full mb-5 group">
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <span class="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">Do you smoke? </span>
-                                    <input type="checkbox" value="" class="sr-only peer"/>
-                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <div className="relative z-0 w-full mb-5 group">
+                                <label className="inline-flex items-center cursor-pointer">
+                                    <span className="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">Do you smoke? </span>
+                                    <input type="checkbox" name="smoke" value={medicalFormData.smoke} className="sr-only peer" onChange={handleMedicalChange} />
+                                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            {/* History of drug abuse? */}
-                            <div class="relative z-0 w-full mb-5 group">
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <span class="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">History of drug abuse? </span>
-                                    <input type="checkbox" value="" class="sr-only peer"/>
-                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <div className="relative z-0 w-full mb-5 group">
+                                <label className="inline-flex items-center cursor-pointer">
+                                    <span className="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">History of drug abuse? </span>
+                                    <input type="checkbox" name="drug_abuse" value={medicalFormData.drug_abuse} className="sr-only peer" onChange={handleMedicalChange} />
+                                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            {/* Do you drink alcohol? */}
-                            <div class="relative z-0 w-full mb-5 group">
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <span class="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">Do you drink alcohol?</span>
-                                    <input type="checkbox" value="" class="sr-only peer"/>
-                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <div className="relative z-0 w-full mb-5 group">
+                                <label className="inline-flex items-center cursor-pointer">
+                                    <span className="mr-5 text-sm font-medium text-gray-500 dark:text-gray-400">Do you drink alcohol?</span>
+                                    <input type="checkbox" name="alcohol" value={medicalFormData.alcohol} className="sr-only peer" onChange={handleMedicalChange} />
+                                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            <div class="relative z-0 w-full mb-5 group">
-                                <input type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Type Password To Save</label>
-                            </div>
-
-                        </div>
-                        
-
-                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                         </form>
                     </div>
                 </div>
