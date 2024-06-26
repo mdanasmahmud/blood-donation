@@ -30,10 +30,10 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
             console.log(userMedicalProfile)
             
             setDonorDetails({
-              donorName: userProfile[0].userFirstName + ' ' + userProfile[0].userLastName,
-              donorBloodGroup: userMedicalProfile[0].userBloodGroup,
-              donorContactNumber: userProfile[0].userPhone
-            })
+              donorName: (userProfile[0] ? userProfile[0].userFirstName + ' ' + userProfile[0].userLastName : '') || '',
+              donorBloodGroup: (userMedicalProfile[0] ? userMedicalProfile[0].userBloodGroup : '') || '',
+              donorContactNumber: (userProfile[0] ? userProfile[0].userPhone : '') || ''
+            });
             
           }
           catch (error){
@@ -44,7 +44,7 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
         fetchUserDetails()
     }, [userId])
 
-    
+
 
 
 
