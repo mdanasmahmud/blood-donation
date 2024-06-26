@@ -26,8 +26,6 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
             const data = await response.json()
 
             const { userProfile, userMedicalProfile } = data.user
-
-            console.log(userMedicalProfile)
             
             setDonorDetails({
               donorName: (userProfile[0] ? userProfile[0].userFirstName + ' ' + userProfile[0].userLastName : '') || '',
@@ -45,7 +43,40 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
     }, [userId])
 
 
+    // This is to submit the user to the donor list
 
+    const submitBloodDonorHandler = () => {
+      setShowModal(false)
+      const submitBloodDonorInfo = async () => {
+        const submitBloodDonorData = {
+          user_id: userId,
+          donorName: donorDetails.donorName,
+          blood_group: donorDetails.donorBloodGroup,
+          donorPhone: donorDetails.donorContactNumber
+        }
+
+        try{
+          const response = await fetch('http://localhost:5000/api/blood-donors/submitBloodDonor', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + userToken,
+            },
+            body: JSON.stringify(submitBloodDonorData)
+          })
+
+          if(!response.ok){
+            console.log("Unable to submit the blood donor information")
+          }
+
+
+        }catch (error){
+          console.log("Error: " + error)
+        }
+
+      }
+      submitBloodDonorInfo()
+    }
 
 
     return(
@@ -69,6 +100,10 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
                   placeholder=" "
                   required
                   value={donorDetails.donorName}
+                  onChange={(e) => setDonorDetails((prevState) => ({
+                    ...prevState,
+                    donorName: e.target.value
+                  }))}
                 />
                 <label
                   htmlFor="patient_name"
@@ -85,6 +120,10 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   value={donorDetails.donorBloodGroup}
+                  onChange={(e) => setDonorDetails((prevState) => ({
+                    ...prevState,
+                    donorBloodGroup: e.target.value
+                  }))}
                   required
                 />
                 <label
@@ -102,6 +141,10 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   value={donorDetails.donorContactNumber}
+                  onChange={(e) => setDonorDetails((prevState) => ({
+                    ...prevState,
+                    donorContactNumber: e.target.value
+                  }))}
                   required
                 />
                 <label
@@ -114,7 +157,7 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
             </div>
 
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >
+              <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={submitBloodDonorHandler}>
                 Apply
               </button>
               <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={() => setShowModal(false)}>
