@@ -117,7 +117,7 @@ const MapComponent = ({ allLocations, location }) => {
         {/* To show the modal if user clicks become a blood donor */}
 
         {showModal && <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50" style={{zIndex: 2000}} >
-          <BecomeDonorComponent userId = {auth.userId} userToken = {auth.token} setShowModal={setShowModal} />
+          <BecomeDonorComponent userGeo={initialGeo} userId = {auth.userId} userToken = {auth.token} setShowModal={setShowModal} />
         </div>}
 
         <div className="block max-w-max p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">

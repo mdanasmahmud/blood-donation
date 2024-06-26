@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from "react";
 
-const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
+const BecomeDonorComponent = ({userId, userToken, setShowModal, userGeo}) => {
 
     const [donorDetails, setDonorDetails] = useState({
         donorName: '',
         donorBloodGroup: '',
-        donorContactNumber: ''
+        donorContactNumber: '',
+        donorGeoLocation: ''
     })
 
     // This is to fetch the current user Details if he/she wants to be a donor
@@ -30,7 +31,8 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
             setDonorDetails({
               donorName: (userProfile[0] ? userProfile[0].userFirstName + ' ' + userProfile[0].userLastName : '') || '',
               donorBloodGroup: (userMedicalProfile[0] ? userMedicalProfile[0].userBloodGroup : '') || '',
-              donorContactNumber: (userProfile[0] ? userProfile[0].userPhone : '') || ''
+              donorContactNumber: (userProfile[0] ? userProfile[0].userPhone : '') || '',
+              
             });
             
           }
@@ -52,7 +54,8 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal}) => {
           user_id: userId,
           donorName: donorDetails.donorName,
           blood_group: donorDetails.donorBloodGroup,
-          donorPhone: donorDetails.donorContactNumber
+          donorPhone: donorDetails.donorContactNumber,
+          donorGeoLocation: userGeo
         }
 
         try{
