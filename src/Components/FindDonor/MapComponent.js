@@ -89,6 +89,7 @@ const MapComponent = ({ allLocations, location }) => {
                     if (initialGeo === '') {
                         setInitialGeo([latitude, longitude]);
                     }
+                    
                 },
                 (error) => {
                     console.error("Error obtaining location:", error);
@@ -109,6 +110,44 @@ const MapComponent = ({ allLocations, location }) => {
             
         }
     }, [location]);
+
+    // This is to save the location of the user if they are signed in
+
+    useEffect(() => {
+        if (auth.isLoggedIn){
+
+        const updateBackendWithLocation = () => {
+            // Assuming you have the user's location in `position` state
+            const [latitude, longitude] = position;
+            fetch('http://localhost:5000/api/blood-donors/updateBloodDonorLocation', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + auth.token
+                },
+                body: JSON.stringify({
+                    user_id: auth.userId,
+                    latitude,
+                    longitude,
+                    
+                }),
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+        };
+    
+        // Call the function immediately to update the backend with the initial location
+        updateBackendWithLocation();
+    
+        // Set up the interval to call the function every 10 minutes
+        const intervalId = setInterval(updateBackendWithLocation, 600000); // 600000 ms = 10 minutes
+    
+        // Clean up the interval on component unmount
+        return () => clearInterval(intervalId);
+    }
+    }, [position]); // Depend on `position` to re-setup the interval if the user's location changes
+    
 
 
 
