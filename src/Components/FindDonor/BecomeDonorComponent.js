@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 
-const BecomeDonorComponent = ({userId, userToken, setShowModal, userGeo}) => {
+const BecomeDonorComponent = ({setRefreshDonorList, userId, userToken, setShowModal, userGeo}) => {
 
     const [donorDetails, setDonorDetails] = useState({
         donorName: '',
@@ -71,6 +71,7 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal, userGeo}) => {
           if(!response.ok){
             console.log("Unable to submit the blood donor information")
           }
+          setRefreshDonorList(currentValue => !currentValue)
 
 
         }catch (error){
@@ -125,6 +126,7 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal, userGeo}) => {
           throw new Error("Failed to delete the user")
         }
         setcheckBloodDonorExists(false);
+        setRefreshDonorList(currentValue => !currentValue)
         
       }
       catch (error){
