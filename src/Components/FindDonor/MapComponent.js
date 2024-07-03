@@ -69,7 +69,7 @@ const MapUpdater = ({ position }) => {
     return null;
 };
 
-const MapComponent = ({ allLocations, location }) => {
+const MapComponent = ({ allLocations, location, setRefreshDonorList }) => {
 
     const auth = useContext(AuthContext)
 
@@ -156,7 +156,7 @@ const MapComponent = ({ allLocations, location }) => {
         {/* To show the modal if user clicks become a blood donor */}
 
         {showModal && <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50" style={{zIndex: 2000}} >
-          <BecomeDonorComponent userGeo={initialGeo} userId = {auth.userId} userToken = {auth.token} setShowModal={setShowModal} />
+          <BecomeDonorComponent setRefreshDonorList={setRefreshDonorList} userGeo={initialGeo} userId = {auth.userId} userToken = {auth.token} setShowModal={setShowModal} />
         </div>}
 
         <div className="block max-w-max p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -183,14 +183,15 @@ const MapComponent = ({ allLocations, location }) => {
                 {allLocations.map((loc, index) => (
                     <MarkerWithAddress key={index} position={loc} icon={redIcon} />
                 ))}
-                <Marker position={position}>
+                {/* This is to show the initial person's position */}
+                {/* <Marker position={position}>
                     <Popup>
                         You are here. {position}
                     </Popup>
                 </Marker>
                 {initialGeo && initialGeo.length === 2 && (
                     <MarkerWithAddress position={initialGeo} />
-                )}
+                )} */}
                 <MapUpdater position={position} />
             </MapContainer>
         </div>
