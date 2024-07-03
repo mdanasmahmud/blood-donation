@@ -86,7 +86,7 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal, userGeo}) => {
     const [checkBloodDonorExists, setcheckBloodDonorExists] = useState(false)
 
     useEffect(() => {
-      const fetchUserDetails = async () => {
+      const fetchDonorDetails = async () => {
         try{
           const response = await fetch(`http://localhost:5000/api/blood-donors/getDonorById/${userId}`,{
             method: "GET",
@@ -107,8 +107,30 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal, userGeo}) => {
         }
         
       }
-      fetchUserDetails()
+      fetchDonorDetails()
   }, [userId])
+
+    // Delete the user details
+
+    const donorDeleteHandler = async () => {
+      try{
+        const response = await fetch(`http://localhost:5000/api/blood-donors/deleteBloodDoner/${userId}`,{
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer ' + userToken,
+          }
+        })
+        if(!response.ok){
+          throw new Error("Failed to delete the user")
+        }
+        setcheckBloodDonorExists(false);
+        
+      }
+      catch (error){
+        console.log("Catched Error: " + error)
+      }
+    }
 
 
     return(
@@ -198,6 +220,8 @@ const BecomeDonorComponent = ({userId, userToken, setShowModal, userGeo}) => {
               <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={() => setShowModal(false)}>
                 Cancel
               </button>
+              {checkBloodDonorExists && <button type="button" class="content-end py-2.5 px-5 ms-3 mt-2 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" onClick={donorDeleteHandler}>Delete</button>}
+              
             </div>
           </div>
     </>
