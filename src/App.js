@@ -19,17 +19,6 @@ import { AuthContext } from './context/auth-contex';
 
 function App() {
 
-  const donorList = [
-    {user_id: 0, donorName: 'Anas Mahmud', blood_group: 'A+', phoneNumber: '123-456-7890', location: [23.74699, 90.37092]},
-    {user_id: 1, donorName: 'John Doe', blood_group: 'B+', phoneNumber: '234-567-8901', location: [23.74595, 90.36841]},
-    {user_id: 2, donorName: 'Jane Smith', blood_group: 'O+', phoneNumber: '345-678-9012', location: [23.74299, 90.36488]},
-    {user_id: 3, donorName: 'Emma Johnson', blood_group: 'AB+', phoneNumber: '456-789-0123', location: [23.73924, 90.36509]},
-    {user_id: 4, donorName: 'Robert Brown', blood_group: 'A-', phoneNumber: '567-890-1234', location: [23.73313, 90.37160]},
-    {user_id: 5, donorName: 'Olivia Davis', blood_group: 'B-', phoneNumber: '678-901-2345', location: [23.73585, 90.38172]},
-    {user_id: 6, donorName: 'William Miller', blood_group: 'O-', phoneNumber: '789-012-3456', location: [23.74169, 90.39520]},
-    {user_id: 7, donorName: 'Emily Wilson', blood_group: 'AB-', phoneNumber: '890-123-4567', location: [23.75077, 90.39326]},
-]
-
 const newsList = [
   {news_id: 0, newsTitle: 'Created Website', shortDescription: 'This Website will act to help people who are in need of blood', newsDate: '10-23-2021', newsDescription: 'This Website will act to help people who are in need of blood. This took me a lot of time to think of', newsAuthor: 'Anas'},
   {news_id: 1, newsTitle: 'Will Deploy', shortDescription: 'Will Deploy this website', newsDate: '10-21-2021', newsDescription: 'Lot of things need to be made for this website to work.', newsAuthor: 'Anas'},
@@ -67,8 +56,8 @@ const logout = useCallback(() => {
   if (token) {
     routes = (
       <React.Fragment>
-        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length} />} />
-        <Route path='find-donor' element={<FindDonor donorList={donorList} />} />
+        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={0} />} />
+        <Route path='find-donor' element={<FindDonor />} />
         <Route path='blood-needed' element={<BloodNeededPage/>} />
         <Route path='news/' element={<TimelineList newsList={newsList} />} />
         <Route path='news/:news_id/' element={<TimelineDetails newsList={newsList} />} />
@@ -80,8 +69,8 @@ const logout = useCallback(() => {
   } else {
     routes = (
       <React.Fragment>
-        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={donorList.length} />} />
-        <Route path='find-donor' element={<FindDonor donorList={donorList} />} />
+        <Route path='/' element={<Home newsList={newsList.slice(0, 3)} totalDonors={0} />} />
+        <Route path='find-donor' element={<FindDonor />} />
         <Route path='blood-needed' element={<BloodNeededPage />} />
         <Route path='news/' element={<TimelineList newsList={newsList} />} />
         <Route path='news/:news_id/' element={<TimelineDetails newsList={newsList} />} />
