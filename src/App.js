@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './Components/Navbar/NavbarComponent';
@@ -36,15 +36,26 @@ const newsList = [
 const [token, setToken] = useState(false);
 const [userId, setUserId] = useState(false);
 
+
+
 const login = useCallback((uid, token) => {
     setToken(token);
+    localStorage.setItem('userData', JSON.stringify({userId: uid, token: token}))
     setUserId(uid);
 }, []);
 
 const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
+    localStorage.removeItem('userData');
 }, []);
+
+useEffect(() => {
+  const storedData = JSON.parse(localStorage.getItem('userData'));
+  if(storedData && storedData.token){
+    login(storedData.userId, storedData.token)
+  }
+}, [login])
 
   // To send a post request you need to add the token as the header
 
