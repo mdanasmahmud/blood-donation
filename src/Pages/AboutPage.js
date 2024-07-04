@@ -1,9 +1,10 @@
 import React from 'react'
 
 import AboutComponent from '../Components/About/AboutComponent';
+
 import UserContact from '../Components/About/UserContact';
 
-const AboutPage = (props) => {
+const AboutPage = () => {
   return (
     <>
       <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
@@ -12,8 +13,11 @@ const AboutPage = (props) => {
       </div>
       <div className='flex justify-center space-x-5 mt-5 space-y-11'>
         <AboutComponent />
+
+      </div>
+      <div className=' m-5'>
         <UserContact />
-    </div>
+      </div>
     </>
     
   );
