@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './Components/Navbar/NavbarComponent';
@@ -17,7 +17,7 @@ import ForgotPasswordComponent from './Components/Others/ForgotPasswordComponent
 
 import { AuthContext } from './context/auth-contex';
 
-let logoutTimer;
+import { useAuth } from './hooks/auth-hook';
 
 function App() {
 
@@ -35,40 +35,7 @@ const newsList = [
   {news_id: 10, newsTitle: 'Year End Review', shortDescription: 'Looking back at our achievements this year', newsDate: '11-01-2021', newsDescription: 'Looking back at our achievements this year. We couldnt have done it without you.', newsAuthor: 'Anas'},
 ];
 
-const [token, setToken] = useState(false);
-const [tokenExpirationDate, setTokenExpirationDate] = useState()
-const [userId, setUserId] = useState(false);
-
-const login = useCallback((uid, token, expirationDate) => {
-    setToken(token);
-    setUserId(uid);
-    const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60)
-    setTokenExpirationDate(tokenExpirationDate)
-    localStorage.setItem('userData', JSON.stringify({userId: uid, token: token, expiration: tokenExpirationDate.toISOString()}))
-}, []);
-
-const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
-    setTokenExpirationDate(null);
-    localStorage.removeItem('userData');
-}, []);
-
-useEffect(() => {
-  if (token && tokenExpirationDate){
-    const remainingTime = tokenExpirationDate.getTime() - new Date().getTime()
-    logoutTimer = setTimeout(logout, remainingTime)
-  }else{
-    clearTimeout(logoutTimer)
-  }
-}, [token, logout, tokenExpirationDate])
-
-useEffect(() => {
-  const storedData = JSON.parse(localStorage.getItem('userData'));
-  if(storedData && storedData.token && new Date(storedData.expiration) > new Date()){
-    login(storedData.userId, storedData.token, new Date(storedData.expiration))
-  }
-}, [login])
+  const {token, login, logout, userId} = useAuth()
 
   // To send a post request you need to add the token as the header
 
