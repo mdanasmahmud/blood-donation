@@ -4,8 +4,6 @@ import { NavLink } from 'react-router-dom';
 
 import { AuthContext } from "../../context/auth-contex";
 
-
-
 // Component if the user did not login
 const UserNotLogin = () => {
 
@@ -95,7 +93,36 @@ const UserNotLogin = () => {
 // Component if the user did login (Currently no user so the data is static)
 const UserLoggedin = () => {
 
+    const [userEmail, setUserEmail] = useState()
+
     const auth = useContext(AuthContext)
+
+    useEffect(() => {
+        const userNameGetRequest = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/users/${auth.userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + auth.token
+                    }
+                });
+                
+        
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+        
+                const data = await response.json();
+                setUserEmail(data.user.email)
+    
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        userNameGetRequest()
+    },[auth.userId])
 
     const signOutHandler = () => {
         auth.logout()
@@ -104,16 +131,14 @@ const UserLoggedin = () => {
     return (
         <div className="absolute mt-5 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600" id="userDropdown">
             <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                {<div className="font-medium truncate">Checking username</div>}
-                {<div className="font-medium truncate">Checking mail</div>} {/* Check if user is not null before accessing its properties */}
+                
+                {<div className="font-medium truncate">{userEmail}</div>}
             </div>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                 <li>
                     <NavLink to='/user/dashboard/' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</NavLink>
                 </li>
-                <li>
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                </li>
+                
             </ul>
             <div className="py-1">
                 <a href="#" onClick={signOutHandler} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
