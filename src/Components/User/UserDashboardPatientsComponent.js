@@ -19,7 +19,7 @@ const UserDashboardPatientsComponent = () => {
   const [patients, setPatients] = useState([]);
 
   const updatePatientDetails = async () => {
-    console.log(editingPatient.id);
+    // console.log(editingPatient.id);
     const response = await fetch("http://localhost:5000/api/patients/updatePatient", {
       method: "PATCH",
       headers: {
@@ -101,6 +101,14 @@ const UserDashboardPatientsComponent = () => {
 
     fetchPatients();
   }, [auth.userId, updateTrigger]);
+
+  // This is for user eligible form
+
+  const [userEligibleForm, setUserEligibleForm] = useState()
+
+  const eligibleFormHandler = (userEligibleData) => {
+    setUserEligibleForm(userEligibleData)
+  }
 
   return (
     <div>
@@ -252,7 +260,7 @@ const UserDashboardPatientsComponent = () => {
                                 {donor.donorPhone}
                             </td>
                             <td class="px-6 py-4">
-                                {donor.DonorEligible}
+                            <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => eligibleFormHandler(donor.DonorEligible)}>Form</button>
                             </td>
                             
                           </tr>
@@ -276,6 +284,160 @@ const UserDashboardPatientsComponent = () => {
           </div>
         </div>
       )}
+
+      {/* This is eligible form */}
+      {userEligibleForm && 
+      <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
+      <div class="absolute w-full h-full bg-black opacity-50"></div>
+      <div class="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            Eligible Form
+          </h3>
+          
+        </div>
+        
+        <form class="max-w-md my-5 ml-5">
+                    {/* Name and phone number */}
+                    <div class="grid md:grid-cols-2 md:gap-6">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.name} type="text" name="name" id="floating_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="floating_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.phone} name="phone" id="floating_phone" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disable />
+                            <label for="floating_phone" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone number</label>
+                        </div>
+                    </div>
+
+
+                    {/* This is for selecting blood group */}
+                    <div class="grid md:grid-cols-2 md:gap-6">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <form class="max-w-sm mx-auto">
+                                <label for="bloodGroup" class="sr-only">Blood Group</label>
+                                <select id="bloodGroup" name="bloodGroup" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" value={userEligibleForm.bloodGroup} disabled>
+                                    <option selected>Select your blood group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                </select>
+                            </form>
+                        
+                        </div>
+                        {/* Last blood donation date */}
+                        <div class="relative z-0 w-full mb-5 group">
+                            
+                            <input value={userEligibleForm.lastBloodDonation} name="lastBloodDonation" id="lastBloodDonation" type="date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="lastBloodDonation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last Blood Donation</label>
+                        </div>
+                    </div>
+                    {/* Asking for pre existing conditions */}
+                    <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.preExistingCondition} name="preExistingCondition" id="preExistingCondition" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="preExistingCondition" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pre-existing conditions (e.g., heart disease, diabetes)</label>
+                        </div>
+                    </div>
+
+                    {/* Asking for surgeries or medical procedures */}
+                    <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.recentSurgeries} name="recentSurgeries" id="recentSurgeries" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="recentSurgeries" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Recent surgeries or medical procedures.</label>
+                        </div>
+                    </div>
+
+                    {/* Asking for blood disorder */}
+                    <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.bloodDisorders} name="bloodDisorders" id="bloodDisorders" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="bloodDisorders" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Do you have any blood disorders (e.g., hemophilia, sickle cell disease)</label>
+                        </div>
+                    </div>
+
+                    {/* Medicine Prescribed */}
+                    <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.prescribedMedicine} name="prescribedMedicine" id="prescribedMedicine" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="prescribedMedicine" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Do you take any Prescribed medicine? </label>
+                        </div>
+                    </div>
+
+
+
+                    
+                    <div class="relative z-0 w-full mb-5 group">
+
+                      {/* Asking if they experienced any infections, fevers, or flu-like symptoms in the past four weeks? */}
+                      
+
+                      <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.fluLikeSymptoms == true ? 'Yes' : 'No'} name="prescribedMedicine" id="prescribedMedicine" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="prescribedMedicine" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Any flu-like symptoms in the past 4 weeks? </label>
+                        </div>
+                      </div>
+
+                      
+                      {/* Have you received any vaccinations in the past four weeks? */}
+
+                      <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.vaccinations == true ? 'Yes' : 'No'} name="prescribedMedicine" id="prescribedMedicine" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="prescribedMedicine" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Any vaccinations in the past 4 weeks? </label>
+                        </div>
+                      </div>
+                      
+
+                      {/* Have you traveled outside the country in the past 12 months?*/}
+
+                      <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.antibiotics == true ? 'Yes' : 'No'} name="prescribedMedicine" id="prescribedMedicine" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="prescribedMedicine" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Any antibiotics taken in the past 2 weeks? </label>
+                        </div>
+                      </div>
+
+                        {/* Ever had positive test for HIV, Hepatitis B or C?*/}
+                      
+                      <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.hivHepatitis == true ? 'Yes' : 'No'} name="prescribedMedicine" id="prescribedMedicine" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="prescribedMedicine" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Ever had positive test for HIV, Hepatitis B or C? </label>
+                        </div>
+                      </div>
+
+                        {/* Any pregnancy in the last 6 weeks?*/}
+
+
+                        <div class="relative z-0 w-full mb-5 group">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value={userEligibleForm.pregnancy == true ? 'Yes' : 'No'} name="prescribedMedicine" id="prescribedMedicine" type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled />
+                            <label for="prescribedMedicine" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Currently pregnent or any pregnancy in the last 6 weeks? </label>
+                        </div>
+                      </div>
+                        
+                    </div>
+                    
+
+
+                    </form>
+
+        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+        
+          <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={() => setUserEligibleForm()}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+      }
     </div>
   );
 };
