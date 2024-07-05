@@ -6,7 +6,6 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
   const auth = useContext(AuthContext);
 
   const [applyBloodDonateFlag, setApplyBloodDonateFlag] = useState(false);
-  const [isEligible, setIsEligible] = useState(null); // To store eligibility result
 
   useEffect(() => {
     setClickedPatientId('');
@@ -40,39 +39,14 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
     });
   };
 
-  const calculateEligibility = () => {
-    // Add your eligibility logic here
-    const {
-      lastBloodDonation,
-      fluLikeSymptoms,
-      vaccinations,
-      antibiotics,
-      hivHepatitis,
-      pregnancy
-    } = submitEligibleForm;
-
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
-    const isEligible = new Date(lastBloodDonation) <= sixMonthsAgo &&
-      !fluLikeSymptoms &&
-      !vaccinations &&
-      !antibiotics &&
-      !hivHepatitis &&
-      !pregnancy;
-
-    setIsEligible(isEligible ? 'Yes' : 'No');
-  };
-
   const handleSubmit = async () => {
-    calculateEligibility();
 
     const donorData = {
       donorUserID: auth.userId,
       donorName: submitEligibleForm.name,
       donorBloodGroup: submitEligibleForm.bloodGroup,
       donorPhone: submitEligibleForm.phone,
-      DonorEligible: isEligible
+      DonorEligible: submitEligibleForm
     };
 
     try {
@@ -80,7 +54,6 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": 'Bearer ' + auth.token
         },
         body: JSON.stringify(donorData)
       });
@@ -104,7 +77,7 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
         patientName: applyBloodDonateFlag.patientName,
         patientLocationText: applyBloodDonateFlag.patientLocation,
         patientPhone: applyBloodDonateFlag.patientContact,
-        preferredTime: 'temp Time now',
+        preferredTime: 'Any Time',
         patientBloodGroup: applyBloodDonateFlag.patientBloodGroup,
         status: 'Pending'
       };
@@ -132,10 +105,6 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
       console.log("patientDeeperDetails is undefined");
     }
   };
-
-  // This try is to post the appointment data of the user
-
-  
 
 
   return (
