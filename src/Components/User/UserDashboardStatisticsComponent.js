@@ -69,7 +69,7 @@ const UserDashboardStatisticsComponent = () => {
 
       // This is to get the number of blood donors in all post
 
-      console.log(patients.blood_donors)
+      const totalBloodDonors = patients.reduce((acc, post) => acc + post.blood_donors.length, 0);
 
     return(
         <div class="flex justify-between">
@@ -89,11 +89,9 @@ const UserDashboardStatisticsComponent = () => {
                 <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mr-4">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Blood Donors</h5> 
                     <div class="flex justify-center items-center h-full">
-                        <span class="text-2xl pb-3 text-gray-700 dark:text-gray-400 text-center">0</span>
+                        <span class="text-2xl pb-3 text-gray-700 dark:text-gray-400 text-center">{totalBloodDonors}</span>
                     </div>
                 </div>
-
-                {/* Patient Card */}
                 
             </div>
     )
