@@ -104,6 +104,8 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
     } else {
       console.log("patientDeeperDetails is undefined");
     }
+
+    setApplyBloodDonateFlag(false)
   };
 
 
