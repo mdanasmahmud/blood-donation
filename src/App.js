@@ -19,7 +19,11 @@ import { AuthContext } from './context/auth-contex';
 
 import { useAuth } from './hooks/auth-hook';
 
+
 function App() {
+
+
+
 
   const {token, login, logout, userId} = useAuth()
 
@@ -68,7 +72,8 @@ function App() {
         login: login,
         logout: logout
       }}
-    >
+    > 
+      
       <div className="flex flex-col min-h-screen">
         <Router>
           <Navbar />
@@ -80,6 +85,7 @@ function App() {
           <Footer />
         </Router>
       </div>
+      
     </AuthContext.Provider>
   );
   

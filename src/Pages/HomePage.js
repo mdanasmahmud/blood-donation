@@ -7,6 +7,7 @@ import Timeline from '../Components/HomePage/Timeline/TimelineComponent';
 function Home(props) {
   return (
     <div>
+      
       <Jumbotron/>
       <HomeStatistics totalDonors={props.totalDonors}/>
       <Timeline newsList={props.newsList}/>
