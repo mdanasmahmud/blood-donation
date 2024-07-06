@@ -48,6 +48,26 @@ const UserNotLogin = () => {
         }
     };
 
+    useEffect(() => {
+        const adjustDropdownPosition = () => {
+            const dropdown = document.getElementById('userDropdown');
+            const dropdownRect = dropdown.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+
+            if (dropdownRect.right > viewportWidth) {
+                dropdown.style.right = '0px';
+                dropdown.style.left = 'auto';
+            }
+        };
+
+        adjustDropdownPosition();
+        // Optional: Adjust on window resize
+        window.addEventListener('resize', adjustDropdownPosition);
+
+        // Cleanup listener on component unmount
+        return () => window.removeEventListener('resize', adjustDropdownPosition);
+    }, []);
+
     return (
         <div className="absolute ml-10 mt-5 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-900 dark:divide-gray-600" id="userDropdown">
             <div className="flex flex-col items-center justify-center">
