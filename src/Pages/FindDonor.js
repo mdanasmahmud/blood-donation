@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import DonorList from '../Components/FindDonor/DonorList/DonorListComponent';
 import MapComponent from '../Components/FindDonor/MapComponent';
+import { CSSTransition } from 'react-transition-group';
+import '../../src/Animation/FadeAnimation.css';
 
 const FindDonor = () => {
 
@@ -37,13 +39,24 @@ const FindDonor = () => {
   return (
     <>
       <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Blood Donors</h1>
-        <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Here are all the blood donors </p>
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+          <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Blood Donors</h1>
+        </CSSTransition>
+
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+          <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Here are all the blood donors </p>
+        </CSSTransition>
+        
       </div>
       <div className='max-w-screen-xl flex flex-wrap justify-around mx-auto p-4'>
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+        <MapComponent setRefreshDonorList={setRefreshDonorList} location={clickedId} allLocations={locationList}/>
+      </CSSTransition>
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+        <DonorList donorList={bloodDonorList} setClickedId={setClickedId}/>
+      </CSSTransition>
       
-      <MapComponent setRefreshDonorList={setRefreshDonorList} location={clickedId} allLocations={locationList}/>
-      <DonorList donorList={bloodDonorList} setClickedId={setClickedId}/>
+      
     </div>
     </>
     

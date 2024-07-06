@@ -1,6 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth-contex";
 
+import { CSSTransition } from 'react-transition-group';
+import '../../Animation/FadeAnimation.css';
+
 const UserDashboardAppointmentComponent = () => {
   const auth = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
@@ -80,6 +83,9 @@ const UserDashboardAppointmentComponent = () => {
 
   return (
     <>
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+        
+      
       <div className="m-8 max-w-screen-xl flex flex-wrap items-center justify-between mx-auto w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Appointments</h5>
         {appointments.map((appointment) => (
@@ -107,8 +113,10 @@ const UserDashboardAppointmentComponent = () => {
           </div>
         ))}
       </div>
+      </CSSTransition>
       {/* This modal is to update the appointments */}
       {isAppointmentModalOpen && (
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade" unmountOnExit>
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div className="absolute w-full h-full bg-black opacity-50"></div>
           <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
@@ -175,6 +183,7 @@ const UserDashboardAppointmentComponent = () => {
             </div>
           </div>
         </div>
+        </CSSTransition>
       )}
     </>
   );

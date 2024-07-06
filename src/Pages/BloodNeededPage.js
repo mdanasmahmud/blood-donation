@@ -5,6 +5,9 @@ import BloodNeededSearchComponent from '../Components/BloodNeeded/BloodNeededSea
 import BloodNeededDetailsComponent from '../Components/BloodNeeded/BloodNeededDetailsComponent';
 import BloodNeededPost from '../Components/BloodNeeded/BloodNeededPost';
 
+import { CSSTransition } from 'react-transition-group';
+import '../../src/Animation/FadeAnimation.css';
+
 const BloodNeededPage = () => {
   
   const [searchedText, setSearchedText] = useState('');
@@ -29,12 +32,24 @@ const patientDeeperDetails = patientDetails.find(patientDeeper =>
 
   return (
     <div>
-      <BloodNeededSearchComponent searchedText={searchedText} setSearchedText={setSearchedText} patientDetails={patientDetails}/>
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+        <BloodNeededSearchComponent searchedText={searchedText} setSearchedText={setSearchedText} patientDetails={patientDetails}/>
+      </CSSTransition>
       <div className='flex justify-center'>
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <BloodNeededPost />
+      </CSSTransition>
+
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <BloodNeededListComponent patientDetails={patientDetail} clickedPatientId={clickedPatientId} setClickedPatientId={setClickedPatientId}/>
+      </CSSTransition>
+        
+        
       </div>
-      <BloodNeededDetailsComponent patientDeeperDetails = {patientDeeperDetails} setClickedPatientId={setClickedPatientId}/>
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+        <BloodNeededDetailsComponent patientDeeperDetails = {patientDeeperDetails} setClickedPatientId={setClickedPatientId}/>
+      </CSSTransition>
+      
     </div>
   );
 }

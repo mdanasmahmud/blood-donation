@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/auth-contex";
 
+import { CSSTransition } from 'react-transition-group';
+import '../../Animation/FadeAnimation.css';
 
 const UserDashboardPatientsComponent = () => {
   const auth = useContext(AuthContext);
@@ -111,9 +113,15 @@ const UserDashboardPatientsComponent = () => {
   }
 
   return (
+    
+
+    
     <div>
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
       <div className="m-8 max-w-screen-xl flex  flex-wrap items-center justify-between mx-auto w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+      
         <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Patients</h5>
+        
         {patients.map((patient) => (
           <div key={patient.id} className="m-8 flex flex-wrap justify-around mx-auto w-full p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <h3 className="mb-2 mr-10 text-2xl font-bold text-gray-900 dark:text-white">
@@ -144,9 +152,14 @@ const UserDashboardPatientsComponent = () => {
             </div>
           </div>
         ))}
+        
+        
       </div>
+      </CSSTransition>
+      
       {/* This modal is to update the post */}
       {isModalOpen && (
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div className="absolute w-full h-full bg-black opacity-50"></div>
           <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
@@ -211,10 +224,12 @@ const UserDashboardPatientsComponent = () => {
             </div>
           </div>
         </div>
+        </CSSTransition>
       )}
 
       {/* This is for blood donor modal when user wants to check how many blood donor wants to donate blood */}
       {isBloodDonorModalOpen && (
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div className="absolute w-full h-full bg-black opacity-50"></div>
           <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
@@ -283,10 +298,12 @@ const UserDashboardPatientsComponent = () => {
             </div>
           </div>
         </div>
+        </CSSTransition>
       )}
 
       {/* This is eligible form */}
       {userEligibleForm && 
+      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
       <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
       <div class="absolute w-full h-full bg-black opacity-50"></div>
       <div class="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
@@ -437,8 +454,10 @@ const UserDashboardPatientsComponent = () => {
         </div>
       </div>
     </div>
+    </CSSTransition>
       }
     </div>
+    
   );
 };
 

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from '../../context/auth-contex';
 
+import { CSSTransition } from 'react-transition-group';
+import '../../Animation/FadeAnimation.css';
+
 const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId }) => {
 
   const auth = useContext(AuthContext);
@@ -112,6 +115,7 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
   return (
     <>
       {patientDeeperDetails && (
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div class="absolute w-full h-full bg-black opacity-50"></div>
           <div class="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
@@ -147,9 +151,11 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
             </div>
           </div>
         </div>
+        </CSSTransition>
       )}
 
       {applyBloodDonateFlag && (
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
           <div class="absolute w-full h-full bg-black opacity-50"></div>
           <div class="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-50">
@@ -304,6 +310,7 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
             </div>
           </div>
         </div>
+        </CSSTransition>
       )}
     </>
   );

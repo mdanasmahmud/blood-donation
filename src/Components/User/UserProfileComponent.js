@@ -2,6 +2,9 @@ import React, {useState, useEffect, useContext} from 'react';
 
 import { AuthContext } from '../../context/auth-contex';
 
+import { CSSTransition } from 'react-transition-group';
+import '../../Animation/FadeAnimation.css';
+
 const UserProfileComponent = () => {
     const auth = useContext(AuthContext);
 
@@ -164,6 +167,9 @@ const UserProfileComponent = () => {
     
 
     return (
+            <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+        
+      
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                             <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
@@ -223,6 +229,7 @@ const UserProfileComponent = () => {
                         </form>
                     </div>
                     {/* This is for medical profile edit */}
+                    
                     <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="services" role="tabpanel" aria-labelledby="services-tab">
                     <h2 class="text-left mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Edit Your Medical Profile</h2>
 
@@ -303,7 +310,7 @@ const UserProfileComponent = () => {
             </div>
             </div>
 
-
+            </CSSTransition>
     )
 }
 
