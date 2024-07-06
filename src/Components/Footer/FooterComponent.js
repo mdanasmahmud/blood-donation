@@ -1,5 +1,6 @@
 import React from "react";
 import bloodLogo from '../../images/blood-logo.png';
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
     return (
@@ -11,17 +12,9 @@ const Footer = () => {
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Blood Donation</span>
                     </a>
                     <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+
                         <li>
-                            <a href="#" className="hover:underline me-4 md:me-6">About</a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:underline me-4 md:me-6">Privacy Policy</a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:underline me-4 md:me-6">Licensing</a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:underline">Contact</a>
+                            <a href="" className="hover:underline"><NavLink to='about'>Contact</NavLink></a>
                         </li>
                     </ul>
                 </div>
