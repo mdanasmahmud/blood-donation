@@ -7,7 +7,7 @@ import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <div className="absolute top-0 z-[-2] h-screen w-screen bg-white bg-[radial-gradient(100%_90%_at_50%_0%,rgba(255,0,0,0.13)_0,rgba(255,0,0,0)_75%,rgba(255,0,0,0)_100%)]"><App /></div>
+      <App/>
   </React.StrictMode>
 );
 

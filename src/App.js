@@ -73,6 +73,11 @@ function App() {
         logout: logout
       }}
     > 
+    <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+    <div class="bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,0,0,0.3),rgba(255,255,255,0))]">
+
+      
+      
       
       <div className="flex flex-col min-h-screen">
         <Router>
@@ -85,6 +90,8 @@ function App() {
           <Footer />
         </Router>
       </div>
+    
+      </div></div>
       
     </AuthContext.Provider>
   );
