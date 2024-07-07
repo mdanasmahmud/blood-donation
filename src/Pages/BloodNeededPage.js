@@ -35,17 +35,15 @@ const patientDeeperDetails = patientDetails.find(patientDeeper =>
       <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <BloodNeededSearchComponent searchedText={searchedText} setSearchedText={setSearchedText} patientDetails={patientDetails}/>
       </CSSTransition>
-      <div className='flex justify-center'>
-      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
-        <BloodNeededPost />
-      </CSSTransition>
+      <div className='flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4'>
+  <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+    <BloodNeededPost />
+  </CSSTransition>
 
-      <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
-        <BloodNeededListComponent patientDetails={patientDetail} clickedPatientId={clickedPatientId} setClickedPatientId={setClickedPatientId}/>
-      </CSSTransition>
-        
-        
-      </div>
+  <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+    <BloodNeededListComponent patientDetails={patientDetail} clickedPatientId={clickedPatientId} setClickedPatientId={setClickedPatientId}/>
+  </CSSTransition>
+</div>
       <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <BloodNeededDetailsComponent patientDeeperDetails = {patientDeeperDetails} setClickedPatientId={setClickedPatientId}/>
       </CSSTransition>

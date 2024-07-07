@@ -34,10 +34,10 @@ const UserDetailsComponent = ({userId, userToken}) => {
 
 
     return(
-        <div className="m-8 max-w-screen-xl flex flex-wrap items-center justify-between mx-auto w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="m-4 sm:m-8 max-w-screen-md flex flex-wrap items-center justify-between mx-auto w-full p-6 sm:p-8 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">User Details</h5>
             <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Name: {userName}</p>
-            <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Email: {userEmail}</p>
+        <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Email: {userEmail}</p>
         </div>
     )
 }
