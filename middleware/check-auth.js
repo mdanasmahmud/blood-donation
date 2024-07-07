@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
         }
 
 
-        const decodedToken = jwt.verify(token, 'asdasdasd'); // You need to delete this before uploading into backend
+        const decodedToken = jwt.verify(token, process.env.JWT_KEY); // You need to delete this before uploading into backend
         req.userData = {user_id: decodedToken.user_id}
         next();
     }catch (err) {

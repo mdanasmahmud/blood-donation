@@ -62,9 +62,9 @@ const postUser = async (req, res, next) => {
         return next(error)
     }
 
-    let token;
+    let token; 
 
-    token = jwt.sign({userId: newUser.id}, 'asdasdasd', {expiresIn: '1h'}) // Edit or delete this when submitting online
+    token = jwt.sign({userId: newUser.id}, process.env.JWT_KEY, {expiresIn: '1h'}) // Edit or delete this when submitting online
  
     res.status(201).json({userId: newUser.id,token: token})
 }
@@ -112,7 +112,7 @@ const loginUser = async (req, res, next) => {
         }
 
         let token;
-        token = jwt.sign({userId: identifiedUser.id}, 'asdasdasd', {expiresIn: '1h'}) // Edit or delete this when submitting online
+        token = jwt.sign({userId: identifiedUser.id}, process.env.JWT_KEY, {expiresIn: '1h'}) // Edit or delete this when submitting online
 
 
         res.json({userId: identifiedUser.id, token: token});
