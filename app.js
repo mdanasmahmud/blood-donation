@@ -11,7 +11,7 @@ const userRoute = require('./routes/users-routes')
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:3000' })) // Add this line
+app.use(cors({ origin: process.env.CORS_URL })) // Add this line
 
 app.use(bodyParser.json()) // To convert regular data to objects so that we can insert them.
 
