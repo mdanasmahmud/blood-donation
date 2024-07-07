@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const cors = require('cors') // Add this line
 
 const bloodDonorRoutes = require('./routes/blood-doner-routes')
 const newsRoute = require('./routes/news-routes')
@@ -10,7 +11,11 @@ const userRoute = require('./routes/users-routes')
 
 const app = express();
 
+app.use(cors({ origin: 'http://localhost:3000' })) // Add this line
+
 app.use(bodyParser.json()) // To convert regular data to objects so that we can insert them.
+
+// ... rest of your code
 
 app.use('/api/appointments', appointmentRoute) // This will only take the userId and show the appointments of that user
 app.use('/api/patients', patientRoute) // This can show all patients Id and also 1 if needed
@@ -27,7 +32,7 @@ app.use((error ,req, res, next) => { // Will take this as a error handling middl
 })
 
 mongoose
-    .connect("")
+    .connect("") // Add your mongo DB here
     .then(() => {
     app.listen(5000);
                 })

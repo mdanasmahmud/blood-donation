@@ -1,10 +1,8 @@
-const { v4: uuidv4 } = require('uuid');
-
 const HttpError = require('../models/http-error')
 
 const Appointment = require('../models/appointment-model')
 
-  const getAppointmentsbyUser = async (req, res, next) => {
+const getAppointmentsbyUser = async (req, res, next) => {
     const userId = req.params.appointmentUserId;
 
     let userAppointments;
@@ -30,14 +28,15 @@ const Appointment = require('../models/appointment-model')
 // We will trigger this post request when new appointments are set by the user
 
 const postAppointmentbyUser = async (req, res, next) => {
-    const {user_id, date, time, patientLocationText, patientPhone, status} = req.body;
+    const {user_id, patientName, patientLocationText, patientPhone, patientBloodGroup, preferredTime, status} = req.body;
 
     const newAppointment = new Appointment({
         user_id,
-        date,
-        time,
+        patientName,
         patientLocationText,
         patientPhone,
+        preferredTime,
+        patientBloodGroup,
         status
     })
     try{
@@ -55,11 +54,16 @@ const postAppointmentbyUser = async (req, res, next) => {
 // Suppose a user posted a appointment and someone submited in their appointment form, they can accept it and it will change the status to Upcoming,
 
 const updateAppointmentbyUser = async (req, res, next) => {
-    const {appointmentId, status} = req.body;
+
+    const {appointmentId, preferredTime, status} = req.body;
 
     let appointment;
     try {
-        appointment = await Appointment.findOneAndUpdate({ _id: appointmentId }, { status: status }, { new: true });
+        appointment = await Appointment.findOneAndUpdate(
+            { _id: appointmentId }, 
+            { $set: { preferredTime: preferredTime, status: status } }, 
+            { new: true }
+        );
     } catch (err) {
         const error = new HttpError(
             "Something went wrong, could not update appointment.", 500
