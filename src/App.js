@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './Components/Navbar/NavbarComponent';
 import Footer from './Components/Footer/FooterComponent';
 
 import Home from './Pages/HomePage';
-import FindDonor from './Pages/FindDonor';
-import AboutPage from './Pages/AboutPage';
 import TimelineList from './Pages/TimelinePage';
-import UserDashboardPage from './Pages/UserDashboardPage';
-import BloodNeededPage from './Pages/BloodNeededPage';
-
-import TimelineDetails from './Components/HomePage/Timeline/TimelineDetailsComponent';
-import SignUpComponent from './Components/Others/SignUpComponent';
-import ForgotPasswordComponent from './Components/Others/ForgotPasswordComponent';
-
+// import TimelineDetails from './Components/HomePage/Timeline/TimelineDetailsComponent';
 import { AuthContext } from './context/auth-contex';
-
 import { useAuth } from './hooks/auth-hook';
+
+import LoadingComponent from './Components/Others/LoadingComponent';
+
+// Code Splitting
+
+const FindDonor = React.lazy(() => import('./Pages/FindDonor'))
+const AboutPage = React.lazy(() => import('./Pages/AboutPage'))
+const UserDashboardPage = React.lazy(() => import('./Pages/UserDashboardPage'))
+const BloodNeededPage = React.lazy(() => import('./Pages/BloodNeededPage'))
+const SignUpComponent = React.lazy(() => import('./Components/Others/SignUpComponent'))
+const ForgotPasswordComponent = React.lazy(() => import('./Components/Others/ForgotPasswordComponent'))
+const TimelineDetails = React.lazy(() => import('./Components/HomePage/Timeline/TimelineDetailsComponent'))
 
 
 function App() {
@@ -36,30 +39,30 @@ function App() {
 
   if (token) {
     routes = (
-      <React.Fragment>
+      <>
         <Route path='/' element={<Home/>} />
-        <Route path='find-donor' element={<FindDonor />} />
-        <Route path='blood-needed' element={<BloodNeededPage/>} />
+        <Route path='find-donor' element={<Suspense fallback={<LoadingComponent/>}><FindDonor /></Suspense>} />
+        <Route path='blood-needed' element={<Suspense fallback={<LoadingComponent/>}><BloodNeededPage/></Suspense>} />
         <Route path='news/' element={<TimelineList />} />
-        <Route path='news/:news_id/' element={<TimelineDetails />} />
-        <Route path='about/' element={<AboutPage />} />
-        <Route path='user/dashboard/*' element={<UserDashboardPage/>} />
+        <Route path='news/:news_id/' element={<Suspense fallback={<LoadingComponent/>}><TimelineDetails /></Suspense>} />
+        <Route path='about/' element={<Suspense fallback={<LoadingComponent/>}><AboutPage /></Suspense>} />
+        <Route path='user/dashboard/*' element={<Suspense fallback={<LoadingComponent/>}><UserDashboardPage/></Suspense>} />
         <Route path='*' element={<Navigate to='/' />} />
-      </React.Fragment>
+      </>
     );
   } else {
     routes = (
-      <React.Fragment>
+      <>
         <Route path='/' element={<Home/>} />
-        <Route path='find-donor' element={<FindDonor />} />
-        <Route path='blood-needed' element={<BloodNeededPage />} />
+        <Route path='find-donor' element={<Suspense fallback={<LoadingComponent/>}><FindDonor /></Suspense>} />
+        <Route path='blood-needed' element={<Suspense fallback={<LoadingComponent/>}><BloodNeededPage/></Suspense>} />
         <Route path='news/' element={<TimelineList />} />
-        <Route path='news/:news_id/' element={<TimelineDetails/>} />
-        <Route path='about/' element={<AboutPage />} />
-        <Route path='sign-up/' element={<SignUpComponent />} />
-        <Route path='forgot-password/' element={<ForgotPasswordComponent />} />
+        <Route path='news/:news_id/' element={<Suspense fallback={<LoadingComponent/>}><TimelineDetails /></Suspense>} />
+        <Route path='about/' element={<Suspense fallback={<LoadingComponent/>}><AboutPage /></Suspense>} />
+        <Route path='sign-up/' element={<Suspense fallback={<LoadingComponent/>}><SignUpComponent /></Suspense>} />
+        <Route path='forgot-password/' element={<Suspense fallback={<LoadingComponent/>}><ForgotPasswordComponent /></Suspense>} />
         <Route path='*' element={<Navigate to='/' />} />
-      </React.Fragment>
+      </>
     );
   }
 
@@ -73,24 +76,20 @@ function App() {
         logout: logout
       }}
     > 
-    <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-    <div class="bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,0,0,0.3),rgba(255,255,255,0))]">
-
-      
-      
-      
+      <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+      <div class="bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,0,0,0.3),rgba(255,255,255,0))]">
       <div className="flex flex-col min-h-screen">
         <Router>
           <Navbar />
           <main className="flex-grow">
             <Routes>
+              
               {routes}
             </Routes>
           </main>
           <Footer />
         </Router>
       </div>
-    
       </div></div>
       
     </AuthContext.Provider>

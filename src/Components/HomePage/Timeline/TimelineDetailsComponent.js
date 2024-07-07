@@ -7,7 +7,7 @@ const TimelineDetails = () => {
 
     useEffect(() => {
         const fetchNewsDetails = async () => {
-            const response = await fetch(`http://localhost:5000/api/news/${news_id}`);
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/news/${news_id}`);
             if (!response.ok) {
                 throw new Error('Could not fetch news details');
             }

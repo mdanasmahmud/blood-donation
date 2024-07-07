@@ -22,7 +22,7 @@ const UserDashboardPatientsComponent = () => {
 
   const updatePatientDetails = async () => {
     // console.log(editingPatient.id);
-    const response = await fetch("http://localhost:5000/api/patients/updatePatient", {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/patients/updatePatient", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ const UserDashboardPatientsComponent = () => {
   };
 
   const deletePatientDetails = async (patientId) => {
-    const response = await fetch("http://localhost:5000/api/patients/patientDelete", {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/patients/patientDelete", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const UserDashboardPatientsComponent = () => {
 
   useEffect(() => {
     const fetchPatients = async () => {
-      const response = await fetch("http://localhost:5000/api/patients/patientUserPosted", {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/patients/patientUserPosted", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

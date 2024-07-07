@@ -53,7 +53,7 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/addDonor/${applyBloodDonateFlag?._id}`, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/patients/addDonor/${applyBloodDonateFlag?._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const BloodNeededDetailsComponent = ({ patientDeeperDetails, setClickedPatientId
       };
 
       try {
-        const response = await fetch('http://localhost:5000/api/appointments/submitAppointment', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/appointments/submitAppointment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

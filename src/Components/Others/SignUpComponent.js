@@ -31,7 +31,7 @@ const SignUpComponent = () => {
             return;
         }
     
-        fetch('http://localhost:5000/api/users/submitUser', {
+        fetch(process.env.REACT_APP_BACKEND_URL + '/users/submitUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

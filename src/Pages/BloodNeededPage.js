@@ -15,7 +15,7 @@ const BloodNeededPage = () => {
   const [clickedPatientId, setClickedPatientId] = useState('');
 
   useEffect(() => {
-  fetch('http://localhost:5000/api/patients/')
+  fetch(process.env.REACT_APP_BACKEND_URL + '/patients/')
     .then(response => response.json())
     .then(data => setPatientDetails(data.patients)) // set the state to the array of patients
     .catch(error => console.error('Error:', error));

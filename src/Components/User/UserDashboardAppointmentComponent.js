@@ -12,7 +12,7 @@ const UserDashboardAppointmentComponent = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/appointments/${auth.userId}`, {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/appointments/${auth.userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const UserDashboardAppointmentComponent = () => {
   const updateAppointmentHandler = async () => {
     console.log(appointmentStatus)
     try {
-      const response = await fetch(`http://localhost:5000/api/appointments/updateAppointment`, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/appointments/updateAppointment`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

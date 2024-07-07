@@ -10,11 +10,11 @@ const BecomeDonorComponent = ({setRefreshDonorList, userId, userToken, setShowMo
     })
 
     // This is to fetch the current user Details if he/she wants to be a donor
-
+ 
     useEffect(() => {
         const fetchUserDetails = async () => {
           try{
-            const response = await fetch(`http://localhost:5000/api/users/${userId}`,{
+            const response = await fetch(`/users/${userId}`,{
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const BecomeDonorComponent = ({setRefreshDonorList, userId, userToken, setShowMo
         }
 
         try{
-          const response = await fetch('http://localhost:5000/api/blood-donors/submitBloodDonor', {
+          const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/blood-donors/submitBloodDonor', {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -89,7 +89,7 @@ const BecomeDonorComponent = ({setRefreshDonorList, userId, userToken, setShowMo
     useEffect(() => {
       const fetchDonorDetails = async () => {
         try{
-          const response = await fetch(`http://localhost:5000/api/blood-donors/getDonorById/${userId}`,{
+          const response = await fetch( process.env.REACT_APP_BACKEND_URL +  `/blood-donors/getDonorById/${userId}`,{
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const BecomeDonorComponent = ({setRefreshDonorList, userId, userToken, setShowMo
 
     const donorDeleteHandler = async () => {
       try{
-        const response = await fetch(`http://localhost:5000/api/blood-donors/deleteBloodDoner/${userId}`,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/blood-donors/deleteBloodDoner/${userId}`,{
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",

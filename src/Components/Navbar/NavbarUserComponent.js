@@ -22,7 +22,7 @@ const UserNotLogin = () => {
         };
     
         try {
-            const response = await fetch('http://localhost:5000/api/users/loginUser', {
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/users/loginUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ const UserLoggedin = () => {
     useEffect(() => {
         const userNameGetRequest = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/users/${auth.userId}`, {
+                const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

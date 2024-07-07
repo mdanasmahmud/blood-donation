@@ -1,25 +1,29 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Routes, Route } from 'react-router-dom';
 
 import UserSidebarComponent from "../Components/User/UserSidebarComponent";
-import UserProfileComponent from "../Components/User/UserProfileComponent";
-import UserDashboardComponent from "../Components/User/UserDashboardComponent";
 
-import UserDashboardAppointmentComponent from "../Components/User/UserDashboardAppointmentComponent";
+import LoadingComponent from "../Components/Others/LoadingComponent";
 
-import UserDashboardPatientsComponent from "../Components/User/UserDashboardPatientsComponent";
+// Lazy loading components
+const UserProfileComponent = React.lazy(() => import("../Components/User/UserProfileComponent"));
+const UserDashboardComponent = React.lazy(() => import("../Components/User/UserDashboardComponent"));
+const UserDashboardAppointmentComponent = React.lazy(() => import("../Components/User/UserDashboardAppointmentComponent"));
+const UserDashboardPatientsComponent = React.lazy(() => import("../Components/User/UserDashboardPatientsComponent"));
 
 const UserDashboardPage = () => {
     return(
         <div>
             <UserSidebarComponent/>
-            <Routes>
-                <Route path="" element={<UserDashboardComponent/>}/>
-                <Route path="profile" element={<UserProfileComponent/>}/>
-                <Route path="appointments" element={<UserDashboardAppointmentComponent/>}/>
-                <Route path="patients" element={<UserDashboardPatientsComponent/>}/>
-            </Routes>
-        </div>
+            <Suspense fallback={<LoadingComponent/>}>
+                <Routes>
+                    <Route path="" element={<UserDashboardComponent/>}/>
+                    <Route path="profile" element={<UserProfileComponent/>}/>
+                    <Route path="appointments" element={<UserDashboardAppointmentComponent/>}/>
+                    <Route path="patients" element={<UserDashboardPatientsComponent/>}/>
+                </Routes>
+            </Suspense>
+        </div> 
     )
 }
 

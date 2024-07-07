@@ -10,7 +10,7 @@ const HomeStatistics = () => {
         const fetchDonors = async () => {
             if (bloodDonorList.length === 0) {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/blood-donors/`, {
+                    const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/blood-donors/`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const HomeStatistics = () => {
     // To fetch the patient's
     useEffect(() => {
         if (patientDetails.length === 0){
-            fetch('http://localhost:5000/api/patients/')
+            fetch(process.env.REACT_APP_BACKEND_URL + '/patients/')
             .then(response => response.json())
             .then(data => setPatientDetails(data.patients))
             .catch(error => console.error('Error:', error));

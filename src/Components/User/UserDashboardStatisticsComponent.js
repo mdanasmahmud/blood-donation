@@ -8,7 +8,7 @@ const UserDashboardStatisticsComponent = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/appointments/${auth.userId}`, {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/appointments/${auth.userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const UserDashboardStatisticsComponent = () => {
 
   useEffect(() => {
     const fetchPatients = async () => {
-      const response = await fetch("http://localhost:5000/api/patients/patientUserPosted", {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/patients/patientUserPosted", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

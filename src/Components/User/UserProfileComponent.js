@@ -48,7 +48,7 @@ const UserProfileComponent = () => {
     const userProfileHandleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`http://localhost:5000/api/users/updatePersonalProfile/${auth.userId}`, {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/users/updatePersonalProfile/${auth.userId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const UserProfileComponent = () => {
         e.preventDefault();
         console.log(medicalFormData);
 
-        const response = await fetch(`http://localhost:5000/api/users/updateUserMedicalProfile/${auth.userId}`, {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/users/updateUserMedicalProfile/${auth.userId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const UserProfileComponent = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/users/${auth.userId}`, {
+                const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

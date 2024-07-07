@@ -119,7 +119,7 @@ const MapComponent = ({ allLocations, location, setRefreshDonorList }) => {
         const updateBackendWithLocation = () => {
             // Assuming you have the user's location in `position` state
             const [latitude, longitude] = position;
-            fetch('http://localhost:5000/api/blood-donors/updateBloodDonorLocation', {
+            fetch(process.env.REACT_APP_BACKEND_URL + '/blood-donors/updateBloodDonorLocation', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
